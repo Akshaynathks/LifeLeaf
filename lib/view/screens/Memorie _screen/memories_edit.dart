@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:life_leaf/controller/memories_db_functions/memories_db_functions.dart';
 import 'package:life_leaf/model/memories_model/memories_model.dart';
+import 'package:life_leaf/view/screens/home_screen/Home.dart';
 import 'package:life_leaf/view/widgets/scaffold_messenger.dart';
 
 class MemoriesEdit extends StatefulWidget {
@@ -148,8 +149,10 @@ class _MemoriesEditState extends State<MemoriesEdit> {
                           top: 180,
                           left: 158,
                           child: FloatingActionButton(
-                            backgroundColor: const Color.fromARGB(255, 127, 128, 127),
-                            foregroundColor: const Color.fromARGB(255, 169, 249, 172),
+                            backgroundColor:
+                                const Color.fromARGB(255, 127, 128, 127),
+                            foregroundColor:
+                                const Color.fromARGB(255, 169, 249, 172),
                             onPressed: () {
                               getMainImages();
                             },
@@ -199,8 +202,10 @@ class _MemoriesEditState extends State<MemoriesEdit> {
                           top: 180,
                           left: 135,
                           child: FloatingActionButton(
-                            backgroundColor: const Color.fromARGB(255, 127, 128, 127),
-                            foregroundColor: const Color.fromARGB(255, 169, 249, 172),
+                            backgroundColor:
+                                const Color.fromARGB(255, 127, 128, 127),
+                            foregroundColor:
+                                const Color.fromARGB(255, 169, 249, 172),
                             onPressed: () {
                               getImages();
                             },
@@ -223,7 +228,8 @@ class _MemoriesEditState extends State<MemoriesEdit> {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        backgroundColor: const Color.fromARGB(255, 127, 128, 127)),
+                        backgroundColor:
+                            const Color.fromARGB(255, 127, 128, 127)),
                     onPressed: () {
                       saveMemoriesToDb();
                     },
@@ -268,7 +274,10 @@ class _MemoriesEditState extends State<MemoriesEdit> {
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.pushNamed(context, 'home'),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
             child: const Text(
               'Yes',
               style: TextStyle(
@@ -304,8 +313,14 @@ class _MemoriesEditState extends State<MemoriesEdit> {
 
       // _title.clear();
 
-      Navigator.pop(context);
       MemoriesDb.getMemories();
+      // Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => Home(),
+      //     ));
+      Navigator.pop(context);
+      Navigator.pop(context);
     }
   }
 

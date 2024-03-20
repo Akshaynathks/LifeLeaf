@@ -40,7 +40,7 @@ class _JournalState extends State<Journal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 62, 62, 62),
+      backgroundColor:Color.fromARGB(255, 49, 49, 49),
       body: Stack(
         children: [
           ValueListenableBuilder<List<JournalModel>>(
@@ -61,7 +61,7 @@ class _JournalState extends State<Journal> {
                           notes: value[index].journalNotes,
                           date: value[index].journalDate ?? '',
                           jkey: value[index].journalkey ?? '',
-                           images: value[index].images,
+                           images: value[index].images, 
                         ); // You can modify this to display data based on the index
                       },
                     )

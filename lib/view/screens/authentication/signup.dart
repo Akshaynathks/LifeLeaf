@@ -261,7 +261,7 @@ class _SignupState extends State<Signup> {
                           width: 350,
                           height: 60,
                           child: Animate(
-                            effects: [FadeEffect(duration: 800.ms),const SlideEffect(curve:Curves.easeIn)],
+                            effects: [FadeEffect(duration: 800.ms),const SlideEffect(curve:Curves.easeIn),FlipEffect(curve: Curves.easeIn)],
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {

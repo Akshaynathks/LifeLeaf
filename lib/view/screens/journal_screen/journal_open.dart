@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:life_leaf/controller/journal_db_functions/journals_db_functions.dart';
 import 'package:life_leaf/view/screens/journal_screen/journal_edit.dart';
+import 'package:life_leaf/view/screens/journal_screen/journal_single_open.dart';
 
 class JournalOpen extends StatefulWidget {
   final String title;
@@ -11,13 +12,14 @@ class JournalOpen extends StatefulWidget {
   final String date;
   final String jkey;
   final List<String?> images;
-  const JournalOpen(
-      {super.key,
-      required this.title,
-      required this.note,
-      required this.date,
-      required this.jkey,
-      required this.images});
+  const JournalOpen({
+    super.key,
+    required this.title,
+    required this.note,
+    required this.date,
+    required this.jkey,
+    required this.images,
+  });
 
   @override
   State<JournalOpen> createState() => _JournalOpenState();
@@ -34,7 +36,7 @@ class _JournalOpenState extends State<JournalOpen> {
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
-            Navigator.pushNamed(context, 'home');
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -61,6 +63,7 @@ class _JournalOpenState extends State<JournalOpen> {
                           title: widget.title,
                           note: widget.note,
                           jkey: widget.jkey,
+                          images: widget.images,
                         ),
                       ));
                 },
@@ -100,27 +103,47 @@ class _JournalOpenState extends State<JournalOpen> {
               style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
-                  fontWeight: FontWeight.w700),
+                  fontWeight: FontWeight.w700
+                  ),
             ),
             const SizedBox(
               height: 20,
             ),
             SizedBox(
-              height: 500,
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10),
-                itemCount: widget.images.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: FileImage(File(widget.images[index]!)))),
-                  );
-                },
+              height: 300,
+              child: ValueListenableBuilder(
+                valueListenable: journalsNotifier,
+                builder: (context, value, child) => GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10),
+                  itemCount: widget.images.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => OpenJournalImage(
+                                image: widget.images[index]!,
+                                imagesss: widget.images,
+                                title: widget.title,
+                                mkey: widget.jkey,
+                                date: widget.date,
+                                note: widget.note,
+                              ),
+                            ));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: FileImage(File(widget.images[index]!)))),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ],

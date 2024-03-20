@@ -58,22 +58,25 @@ class IntroOne extends StatelessWidget {
               width: size.width * 0.8,
               child: Row(
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, 'welcome');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      elevation: 5.0,
-                    ),
-                    child: const Text(
-                      'Skip',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
+                  Animate(
+                    effects: [FadeEffect(duration: 1000.ms),const SlideEffect(curve:Curves.easeIn),FlipEffect(curve: Curves.easeIn)],
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'welcome');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        elevation: 5.0,
+                      ),
+                      child: const Text(
+                        'Skip',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
+                      ),
                     ),
                   ),
                   const Spacer(),

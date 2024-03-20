@@ -68,8 +68,7 @@ class _journalAddState extends State<journalAdd> {
             if (pickedDate != null) {
               print(
                   pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-              String formattedDate =
-                  DateFormat('yyyy-MM-dd').format(pickedDate);
+              formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
               print(
                   formattedDate); //formatted date output using intl package =>  2021-03-16
               setState(() {
@@ -182,8 +181,10 @@ class _journalAddState extends State<journalAdd> {
                           top: 180,
                           left: 158,
                           child: FloatingActionButton(
-                            backgroundColor: const Color.fromARGB(255, 127, 128, 127),
-                            foregroundColor: const Color.fromARGB(255, 169, 249, 172),
+                            backgroundColor:
+                                const Color.fromARGB(255, 127, 128, 127),
+                            foregroundColor:
+                                const Color.fromARGB(255, 169, 249, 172),
                             onPressed: () {
                               getImages();
                             },
@@ -206,7 +207,8 @@ class _journalAddState extends State<journalAdd> {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        backgroundColor: const Color.fromARGB(255, 127, 128, 127)),
+                        backgroundColor:
+                            const Color.fromARGB(255, 127, 128, 127)),
                     onPressed: () {
                       saveJournalToDb();
                       print(selectedImages);
@@ -252,7 +254,10 @@ class _journalAddState extends State<journalAdd> {
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.pushNamed(context, 'home'),
+            onPressed: () {
+               Navigator.pop(context);
+                Navigator.pop(context);
+            },
             child: const Text(
               'Yes',
               style: TextStyle(

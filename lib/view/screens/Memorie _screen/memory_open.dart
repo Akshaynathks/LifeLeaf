@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:life_leaf/controller/memories_db_functions/memories_db_functions.dart';
 import 'package:life_leaf/view/screens/Memorie%20_screen/memories_edit.dart';
+import 'package:life_leaf/view/screens/Memorie%20_screen/memories_single_open.dart';
 
 class MemoriesOpen extends StatefulWidget {
   final String title;
@@ -14,7 +15,8 @@ class MemoriesOpen extends StatefulWidget {
       {super.key,
       required this.title,
       required this.images,
-      required this.mkey, required this.mainImage});
+      required this.mkey,
+      required this.mainImage});
 
   @override
   State<MemoriesOpen> createState() => _MemoriesOpenState();
@@ -31,7 +33,7 @@ class _MemoriesOpenState extends State<MemoriesOpen> {
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
-            Navigator.pushNamed(context, 'home');
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -75,18 +77,36 @@ class _MemoriesOpenState extends State<MemoriesOpen> {
           )
         ],
       ),
-      body: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
-        itemCount: widget.images.length,
-        itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: FileImage(File(widget.images[index]!)))),
-          );
-        },
+      body: ValueListenableBuilder(
+        valueListenable: memoriesNotifier,
+        builder: (context, value, child) => GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, mainAxisSpacing: 10, crossAxisSpacing: 10),
+          itemCount: widget.images.length,
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => OpenImage(
+                        image: widget.images[index]!,
+                        imagesss: widget.images,
+                        mainImg: widget.mainImage,
+                        title: widget.title,
+                        mkey: widget.mkey,
+                      ),
+                    ));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: FileImage(File(widget.images[index]!)))),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

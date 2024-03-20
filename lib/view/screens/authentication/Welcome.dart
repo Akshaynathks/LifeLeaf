@@ -30,7 +30,7 @@ class selection extends StatelessWidget {
               width: 300,
               height: 60,
               child: Animate(
-                effects: [SlideEffect(duration: 1000.ms),FadeEffect()],
+                effects: [SlideEffect(duration: 1000.ms),FadeEffect(),FlipEffect(curve: Curves.easeIn)],
                 child: ElevatedButton(
                   onPressed: () => Navigator.pushNamed(context, "signin"),
                   child: Text(
@@ -60,7 +60,7 @@ class selection extends StatelessWidget {
               width: 300,
               height: 60,
               child: Animate(
-                effects: [SlideEffect(duration: 1000.ms),FadeEffect()],
+                effects: [SlideEffect(duration: 1000.ms),FadeEffect(),FlipEffect(curve: Curves.easeIn)],
                 child: ElevatedButton(
                   onPressed: () => Navigator.pushNamed(context, 'signup'),
                   child: Text(

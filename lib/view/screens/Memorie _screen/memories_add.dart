@@ -113,7 +113,26 @@ class _MemoriesAddState extends State<MemoriesAdd> {
                             backgroundColor: Color.fromARGB(255, 127, 128, 127),
                             foregroundColor: Color.fromARGB(255, 169, 249, 172),
                             onPressed: () {
-                              getMainImages();
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text('Select Image Option'),
+                                  actions: [
+                                    IconButton(
+                                        onPressed: () {
+                                          getMainImagesFromCamera();
+                                          Navigator.pop(context);
+                                        },
+                                        icon: Icon(Icons.camera)),
+                                    IconButton(
+                                        onPressed: () {
+                                          getMainImagesFromGallery();
+                                          Navigator.pop(context);
+                                        },
+                                        icon: Icon(Icons.browse_gallery)),
+                                  ],
+                                ),
+                              );
                             },
                             child: Icon(Icons.add),
                             shape: RoundedRectangleBorder(
@@ -289,9 +308,22 @@ class _MemoriesAddState extends State<MemoriesAdd> {
     );
   }
 
-  Future getMainImages() async {
+  Future getMainImagesFromGallery() async {
     final pickedFile = await picker.pickImage(
         source: ImageSource.gallery,
+        imageQuality: 100,
+        maxHeight: 1000,
+        maxWidth: 1000);
+    XFile xfilePick = pickedFile!;
+
+    setState(() {
+      mainImage = xfilePick.path;
+    });
+  }
+
+  Future getMainImagesFromCamera() async {
+    final pickedFile = await picker.pickImage(
+        source: ImageSource.camera,
         imageQuality: 100,
         maxHeight: 1000,
         maxWidth: 1000);

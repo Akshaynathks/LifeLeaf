@@ -56,67 +56,74 @@ class _GoalsState extends State<Goals> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 62, 62, 62),
-      body: Stack(
-        children: [
-          ValueListenableBuilder<List<GoalsMainModel>>(
-            valueListenable: goalsNotifier,
-            builder: (context, value, child) {
-              return value.isNotEmpty
-                  ? ListView.builder(
-                      itemCount: value
-                          .length, // Adjust this based on your actual item count
-                      itemBuilder: (context, index) {
-                        return GoalsCardWidget(
-                          title: value[index].goalTitle ?? '',
-                          stepss: value[index].goalList,
-                          mainKey: value[index].key ?? '',
-                        ); // You can modify this to display data based on the index
-                      },
-                    )
-                  : Center(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 200,
-                          ),
-                          Text(
-                            'No Goals',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'Times',
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 113, 191, 117)),
-                          ),
-                          SizedBox(
-                            width: 200,
-                            child: Text(
-                              'Create Your Goals and it will show up here',
-                              style: TextStyle(
-                                  fontFamily: 'Courier',
-                                  color: Color.fromARGB(255, 195, 191, 191)),
+      backgroundColor: Color.fromARGB(255, 49, 49, 49),
+      body: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+        child: Stack(
+          children: [
+            ValueListenableBuilder<List<GoalsMainModel>>(
+              valueListenable: goalsNotifier,
+              builder: (context, value, child) {
+                return value.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: value
+                            .length, // Adjust this based on your actual item count
+                        itemBuilder: (context, index) {
+                          return GoalsCardWidget(
+                            title: value[index].goalTitle ?? '',
+                            stepss: value[index].goalList,
+                            mainKey: value[index].key ?? '',
+                            goal: value[index],
+                            stepkey: value[index].goalList[0].key ?? '',
+                          ); // You can modify this to display data based on the index
+                        },
+                      )
+                    : Center(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 200,
                             ),
-                          )
-                        ],
-                      ),
-                    );
-            },
-          ),
-          Positioned(
-            top: 580,
-            left: 280,
-            child: FloatingActionButton(
-              backgroundColor: Color.fromARGB(255, 127, 128, 127),
-              foregroundColor: Color.fromARGB(255, 169, 249, 172),
-              onPressed: () {
-                Navigator.pushNamed(context, 'addGoal');
+                            Text(
+                              'No Goals',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Times',
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 113, 191, 117)),
+                            ),
+                            SizedBox(
+                              width: 200,
+                              child: Text(
+                                'Create Your Goals and it will show up here',
+                                style: TextStyle(
+                                    fontFamily: 'Courier',
+                                    color: Color.fromARGB(255, 195, 191, 191)),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
               },
-              child: Icon(Icons.add),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(70)),
             ),
-          ),
-        ],
+            Positioned(
+              top: 580,
+              left: 280,
+              child: FloatingActionButton(
+                backgroundColor: Color.fromARGB(255, 127, 128, 127),
+                foregroundColor: Color.fromARGB(255, 169, 249, 172),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'addGoal');
+                },
+                child: Icon(Icons.add),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(70)),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

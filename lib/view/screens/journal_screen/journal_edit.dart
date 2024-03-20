@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +13,14 @@ class journalEdit extends StatefulWidget {
   final String title;
   final String note;
   final String jkey;
+  final List<String?> images;
   const journalEdit(
       {super.key,
       required this.date,
       required this.title,
       required this.note,
-      required this.jkey});
+      required this.jkey,
+      required this.images});
 
   @override
   State<journalEdit> createState() => _journalEditState();
@@ -28,7 +31,7 @@ class _journalEditState extends State<journalEdit> {
   TextEditingController _title = TextEditingController();
   TextEditingController _notes = TextEditingController();
   TextEditingController _date = TextEditingController();
-  List<String> selectedImages = [];
+  List<String?> selectedImages = [];
   final picker = ImagePicker();
 
   @override
@@ -37,6 +40,7 @@ class _journalEditState extends State<journalEdit> {
     _title.text = widget.title;
     _notes.text = widget.note;
     _date.text = widget.date;
+    selectedImages = widget.images;
     super.initState();
   }
 
@@ -187,17 +191,20 @@ class _journalEditState extends State<journalEdit> {
                                 itemBuilder: (BuildContext context, int index) {
                                   return Center(
                                       child: kIsWeb
-                                          ? Image.network(selectedImages[index])
-                                          : Image.network(
-                                              selectedImages[index]));
+                                          ? Image.network(
+                                              selectedImages[index]!)
+                                          : Image.file(
+                                              File(selectedImages[index]!)));
                                 },
                               ),
                         Positioned(
                           top: 180,
                           left: 158,
                           child: FloatingActionButton(
-                            backgroundColor: const Color.fromARGB(255, 127, 128, 127),
-                            foregroundColor: const Color.fromARGB(255, 169, 249, 172),
+                            backgroundColor:
+                                const Color.fromARGB(255, 127, 128, 127),
+                            foregroundColor:
+                                const Color.fromARGB(255, 169, 249, 172),
                             onPressed: () {
                               getImages();
                             },
@@ -220,9 +227,11 @@ class _journalEditState extends State<journalEdit> {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        backgroundColor: const Color.fromARGB(255, 127, 128, 127)),
+                        backgroundColor:
+                            const Color.fromARGB(255, 127, 128, 127)),
                     onPressed: () {
                       saveEditedJournalToDb();
+
                     },
                     child: const Text(
                       'Save',
@@ -265,7 +274,10 @@ class _journalEditState extends State<journalEdit> {
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.pushNamed(context, 'home'),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
             child: const Text(
               'Yes',
               style: TextStyle(
@@ -294,7 +306,8 @@ class _journalEditState extends State<journalEdit> {
         context: context,
         text: 'Successfully Edited',
         textcolor: Colors.white);
-    Navigator.pushNamed(context, 'home');
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   Future getImages() async {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:life_leaf/model/goals_model/goals_main_model.dart';
 import 'package:life_leaf/model/goals_model/goals_model.dart';
@@ -19,6 +18,7 @@ import 'package:life_leaf/view/screens/authentication/signup.dart';
 import 'package:life_leaf/view/screens/authentication/splash.dart';
 import 'package:life_leaf/view/screens/journal_screen/journal.dart';
 import 'package:life_leaf/view/screens/journal_screen/journal_add.dart';
+import 'package:life_leaf/view/screens/journal_screen/journal_single_open.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,18 +46,18 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
       routes: {
-        "welcome": (context) => selection(),
-        "signin": (context) => Signin(),
-        "signup": (context) => Signup(),
-        "home": (context) => Home(),
-        "addGoal": (context) => AddGoal(),
-        "goal": (context) => Goals(),
-        "addJournal": (context) => journalAdd(),
-        "journal": (context) => Journal(),
-        "addMemories": (context) => MemoriesAdd(),
-        "introOne": (context) => IntroOne(),
-        "introTwo": (context) => IntroTwo(),
-        "introThree": (context) => IntroThree(),
+        "welcome": (context) => const selection(),
+        "signin": (context) => const Signin(),
+        "signup": (context) => const Signup(),
+        "home": (context) => const Home(),
+        "addGoal": (context) => const AddGoal(),
+        "goal": (context) => const Goals(),
+        "addJournal": (context) => const journalAdd(),
+        "journal": (context) => const Journal(),
+        "addMemories": (context) => const MemoriesAdd(),
+        "introOne": (context) => const IntroOne(),
+        "introTwo": (context) => const IntroTwo(),
+        "introThree": (context) => const IntroThree(),
         // "openJournal":(context) => JournalOpen(title: '',),
       },
     );

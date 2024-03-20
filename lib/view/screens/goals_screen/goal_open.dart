@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:life_leaf/controller/goals_db_functions/goals_db_functions.dart';
+import 'package:life_leaf/model/goals_model/goals_main_model.dart';
 import 'package:life_leaf/model/goals_model/goals_model.dart';
+import 'package:life_leaf/view/screens/goals_screen/goals_edit.dart';
 
 class GoalOpen extends StatefulWidget {
   final String title;
   final List<GoalsModel> stepss;
+  final GoalsMainModel goal;
   final String mainGoalkey;
+  final String stepkey;
   const GoalOpen(
       {super.key,
       required this.title,
       required this.stepss,
-      required this.mainGoalkey});
+      required this.mainGoalkey,
+      required this.goal, required this.stepkey});
 
   @override
   State<GoalOpen> createState() => _GoalOpenState();
@@ -46,7 +51,19 @@ class _GoalOpenState extends State<GoalOpen> {
                   leading: Icon(Icons.edit),
                   title: Text('Edit'),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditGoal(
+                          stepss: widget.stepss,
+                          title: widget.title,
+                          mainGoalkey: widget.mainGoalkey,
+                          goal: widget.goal,
+                          stepkey: widget.stepkey,
+                        ),
+                      ));
+                },
               ),
               PopupMenuItem(
                 child: ListTile(

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:life_leaf/controller/memories_db_functions/memories_db_functions.dart';
 import 'package:life_leaf/model/memories_model/memories_model.dart';
 import 'package:life_leaf/view/screens/Memorie%20_screen/memory_open.dart';
@@ -23,7 +24,7 @@ class _MemoriesState extends State<Memories> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 62, 62, 62),
+      backgroundColor: Color.fromARGB(255, 49, 49, 49),
       body: Stack(children: [
         ValueListenableBuilder<List<MemoriesModel>>(
           valueListenable: memoriesNotifier,
@@ -56,20 +57,23 @@ class _MemoriesState extends State<Memories> {
                           child: Container(
                             width: double.infinity,
                             height: 200,
-                            // color: Colors.white,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: FileImage(
                                         File(value[index].mainImage!))),
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(25)),
+                                borderRadius: BorderRadius.circular(20)),
                             child: Align(
                               alignment: Alignment.bottomCenter,
-                              child: Text(
-                                value[index].title,
-                                style: const TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.w900),
+                              child: Animate(
+                                effects: [MoveEffect(transformHitTests: true)],
+                                child: Text(
+                                  value[index].title,
+                                  style: const TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.w900),
+                                ),
                               ),
                             ),
                           ),

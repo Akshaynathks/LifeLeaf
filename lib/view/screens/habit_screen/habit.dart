@@ -11,7 +11,7 @@ class _HabitState extends State<Habit> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color.fromARGB(255, 62, 62, 62),
+      backgroundColor: Color.fromARGB(255, 49, 49, 49),
       body: Column(children: [
       //  CustomSearchBar(onSearch: (query) {
       //           // Handle search query

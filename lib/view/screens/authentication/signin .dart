@@ -194,7 +194,8 @@ class _SigninState extends State<Signin> {
                         child: Animate(
                           effects: [
                             FadeEffect(duration: 800.ms),
-                            const SlideEffect(curve: Curves.easeIn)
+                            const SlideEffect(curve: Curves.easeIn),
+                            FlipEffect(curve: Curves.easeIn)
                           ],
                           child: ElevatedButton(
                             onPressed: () async {

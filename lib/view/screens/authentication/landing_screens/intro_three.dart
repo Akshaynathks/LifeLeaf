@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class IntroThree extends StatelessWidget {
   const IntroThree({super.key});
@@ -49,22 +50,25 @@ class IntroThree extends StatelessWidget {
           Positioned(
             top: size.height * 0.9,
             left: size.width * 0.7,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'welcome');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  elevation: 5.0,
-                 ),
-              child: const Text(
-                'Start',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15
+            child: Animate(
+              effects: [FlipEffect(curve: Curves.easeIn)],
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, 'welcome');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    elevation: 5.0,
+                   ),
+                child: const Text(
+                  'Start',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15
+                  ),
                 ),
               ),
             ),

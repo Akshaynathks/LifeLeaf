@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:life_leaf/view/screens/journal_screen/journal_open.dart';
 
 class JournalCardWidget extends StatelessWidget {
@@ -30,34 +31,39 @@ class JournalCardWidget extends StatelessWidget {
               ),
             ));
       },
-      child: Card(
-        child: Container(
-          // color: Colors.white,
-          height: 200,
-          width: 160,
-          decoration: BoxDecoration(
-              color: Color.fromARGB(255, 231, 230, 230),
-              borderRadius: BorderRadius.circular(15)),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 10,
+      child: Animate(
+        effects: [FadeEffect(duration: 800.ms),const SlideEffect(curve:Curves.easeIn)],
+        child: Padding(
+          padding: const EdgeInsets.only(left :8.0,top: 8.0),
+          child: Card(
+            child: Container(
+              height: 200,
+              width: 160,
+              decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 231, 230, 230),
+                  borderRadius: BorderRadius.circular(15)),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    title,
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 9, 9, 9),
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: SizedBox(
+                        height: 130,
+                        child: Text(
+                          notes,
+                        ),
+                      ))
+                ],
               ),
-              Text(
-                title,
-                style: TextStyle(
-                    color: Color.fromARGB(255, 9, 9, 9),
-                    fontWeight: FontWeight.bold),
-              ),
-              Align(
-                  alignment: Alignment.topLeft,
-                  child: SizedBox(
-                    height: 130,
-                    child: Text(
-                      notes,
-                    ),
-                  ))
-            ],
+            ),
           ),
         ),
       ),
