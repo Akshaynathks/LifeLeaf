@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,7 +15,7 @@ class MemoriesAdd extends StatefulWidget {
 
 class _MemoriesAddState extends State<MemoriesAdd> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController _title = TextEditingController();
+  final TextEditingController _title = TextEditingController();
 
   List<String> selectedImages = [];
   String? mainImage;
@@ -24,7 +23,7 @@ class _MemoriesAddState extends State<MemoriesAdd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 62, 62, 62),
+      backgroundColor: const Color.fromARGB(255, 62, 62, 62),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -35,9 +34,9 @@ class _MemoriesAddState extends State<MemoriesAdd> {
             // Navigator.pop(context);
           },
         ),
-        title: Text(
+        title: const Text(
           'Add Memories',
-          style: TextStyle(color: Color.fromARGB(255, 169, 249, 172)),
+          style: TextStyle(color: Color.fromARGB(255, 169, 249, 172),fontFamily: 'Times',),
         ),
       ),
       body: SingleChildScrollView(
@@ -54,7 +53,7 @@ class _MemoriesAddState extends State<MemoriesAdd> {
                     controller: _title,
                     cursorColor: Colors.white,
                     keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Title",
                       labelStyle: TextStyle(color: Colors.white),
                       alignLabelWithHint: true,
@@ -71,16 +70,10 @@ class _MemoriesAddState extends State<MemoriesAdd> {
                         borderSide: BorderSide(color: Colors.red),
                       ),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the title';
-                      }
-                      return null;
-                    },
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
-                Text(
+                const Text(
                   'Add Main Image',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -110,40 +103,40 @@ class _MemoriesAddState extends State<MemoriesAdd> {
                           top: 180,
                           left: 158,
                           child: FloatingActionButton(
-                            backgroundColor: Color.fromARGB(255, 127, 128, 127),
-                            foregroundColor: Color.fromARGB(255, 169, 249, 172),
+                            backgroundColor: const Color.fromARGB(255, 127, 128, 127),
+                            foregroundColor: const Color.fromARGB(255, 169, 249, 172),
                             onPressed: () {
                               showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                  title: Text('Select Image Option'),
+                                  title: const Text('Select Image Option'),
                                   actions: [
                                     IconButton(
                                         onPressed: () {
                                           getMainImagesFromCamera();
                                           Navigator.pop(context);
                                         },
-                                        icon: Icon(Icons.camera)),
+                                        icon: const Icon(Icons.camera)),
                                     IconButton(
                                         onPressed: () {
                                           getMainImagesFromGallery();
                                           Navigator.pop(context);
                                         },
-                                        icon: Icon(Icons.browse_gallery)),
+                                        icon: const Icon(Icons.folder)),
                                   ],
                                 ),
                               );
                             },
-                            child: Icon(Icons.add),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(70)),
+                            child: const Icon(Icons.add),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                Text(
+                const Text(
                   'Add Image',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -183,21 +176,21 @@ class _MemoriesAddState extends State<MemoriesAdd> {
                           top: 180,
                           left: 158,
                           child: FloatingActionButton(
-                            backgroundColor: Color.fromARGB(255, 127, 128, 127),
-                            foregroundColor: Color.fromARGB(255, 169, 249, 172),
+                            backgroundColor: const Color.fromARGB(255, 127, 128, 127),
+                            foregroundColor: const Color.fromARGB(255, 169, 249, 172),
                             onPressed: () {
                               getImages();
                             },
-                            child: Icon(Icons.add),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(70)),
+                            child: const Icon(Icons.add),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 SizedBox(
@@ -207,11 +200,11 @@ class _MemoriesAddState extends State<MemoriesAdd> {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        backgroundColor: Color.fromARGB(255, 127, 128, 127)),
+                        backgroundColor: const Color.fromARGB(255, 127, 128, 127)),
                     onPressed: () {
                       saveMemoriesToDb();
                     },
-                    child: Text(
+                    child: const Text(
                       'Save',
                       style: TextStyle(
                         color: Color.fromARGB(255, 169, 249, 172),
@@ -233,11 +226,13 @@ class _MemoriesAddState extends State<MemoriesAdd> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Color.fromARGB(255, 113, 191, 117),
+        backgroundColor: const Color.fromARGB(255, 233, 233, 233),
         title: const Text('Are you sure?'),
         content: const Text(
           'Do you want to go back?',
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Color.fromARGB(255, 146, 5, 5),
+              fontWeight: FontWeight.bold),
         ),
         actions: [
           TextButton(
@@ -252,7 +247,10 @@ class _MemoriesAddState extends State<MemoriesAdd> {
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.pushNamed(context, 'home'),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
             child: const Text(
               'Yes',
               style: TextStyle(

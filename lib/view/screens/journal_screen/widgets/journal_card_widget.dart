@@ -13,7 +13,9 @@ class JournalCardWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.notes,
-    required this.date, required this.jkey, required this.images,
+    required this.date,
+    required this.jkey,
+    required this.images,
   });
 
   @override
@@ -27,38 +29,42 @@ class JournalCardWidget extends StatelessWidget {
                 title: title,
                 note: notes,
                 date: date,
-                jkey: jkey, images:images,
+                jkey: jkey,
+                images: images,
               ),
             ));
       },
       child: Animate(
-        effects: [FadeEffect(duration: 800.ms),const SlideEffect(curve:Curves.easeIn)],
+        effects: [
+          FadeEffect(duration: 1000.ms),
+        ],
         child: Padding(
-          padding: const EdgeInsets.only(left :8.0,top: 8.0),
+          padding: const EdgeInsets.only(left: 5.0, top: 5.0,right: 5.0),
           child: Card(
             child: Container(
               height: 200,
               width: 160,
               decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 231, 230, 230),
-                  borderRadius: BorderRadius.circular(15)),
+                  color: const Color.fromARGB(255, 238, 208, 155),
+                  borderRadius: BorderRadius.circular(10)),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    title,
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 9, 9, 9),
-                        fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.only(left:8.0),
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                          color: Color.fromARGB(255, 9, 9, 9),
+                          fontWeight: FontWeight.w600,fontSize: 20),
+                    ),
                   ),
                   Align(
                       alignment: Alignment.topLeft,
                       child: SizedBox(
-                        height: 130,
+                        height: 136,
                         child: Text(
-                          notes,
+                          notes,style: const TextStyle(fontFamily: 'Courier',fontWeight: FontWeight.bold),
                         ),
                       ))
                 ],

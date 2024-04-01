@@ -1,12 +1,11 @@
-import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
-import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:life_leaf/controller/user_db_function/authentication_db_function.dart';
 import 'package:life_leaf/view/screens/Memorie%20_screen/memories.dart';
-import 'package:life_leaf/view/screens/authentication/signin%20.dart';
+import 'package:life_leaf/view/screens/authentication/sign_in%20.dart';
 import 'package:life_leaf/view/screens/goals_screen/goals.dart';
 import 'package:life_leaf/view/screens/habit_screen/habit.dart';
+import 'package:life_leaf/view/screens/home_screen/widgets/policy_dialog.dart';
 import 'package:life_leaf/view/screens/journal_screen/journal.dart';
 import 'package:life_leaf/view/screens/reminder_screen/reminder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,39 +53,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return DefaultTabController(
       initialIndex: currentIndex,
       length: 5,
       child: Scaffold(
-        // bottomNavigationBar: CurvedNavigationBar(
-        //     backgroundColor: Color.fromARGB(255, 49, 49, 49),
-        //     color: const Color.fromARGB(255, 78, 77, 77),
-        //     items: [
-        //       CurvedNavigationBarItem(
-        //         child: IconButton(
-        //             icon: Icon(Icons.home_outlined),
-        //             onPressed: () {
-        //               Navigator.pushNamed(context, 'home');
-        //             },
-        //             color: Color.fromARGB(255, 227, 251, 92)),
-        //         label: 'Home',
-        //       ),
-        //       CurvedNavigationBarItem(
-        //         child:
-        //             Icon(Icons.add, color: Color.fromARGB(255, 139, 240, 137)),
-        //         label: 'Add',
-        //       ),
-        //       CurvedNavigationBarItem(
-        //         child: Icon(Icons.search,
-        //             color: Color.fromARGB(255, 227, 251, 92)),
-        //         label: 'Search',
-        //       ),
-        //     ]),
         backgroundColor: const Color.fromARGB(255, 38, 36, 36),
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(130),
+          preferredSize: const Size.fromHeight(130),
           child: AppBar(
-            backgroundColor: Color.fromARGB(255, 0, 0, 0),
+            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
             automaticallyImplyLeading: false,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +71,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   effects: [
                     FadeEffect(duration: 1500.ms),
                     const SlideEffect(curve: Curves.easeIn),
-                    FlipEffect(curve: Curves.easeIn)
+                    const FlipEffect(curve: Curves.easeIn)
                   ],
                   child: Text(greeting,
                       style: const TextStyle(
@@ -110,7 +86,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       effects: [
                         FadeEffect(duration: 1500.ms),
                         const SlideEffect(curve: Curves.easeIn),
-                        FlipEffect(curve: Curves.easeIn)
+                        const FlipEffect(curve: Curves.easeIn)
                       ],
                       child: Text(value[0].username,
                           style: const TextStyle(
@@ -170,8 +146,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             children: [
               DrawerHeader(
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 113, 191, 117),
-                ), //BoxDecoration
+                    gradient: LinearGradient(
+                        colors: [
+                      Color.fromARGB(255, 217, 249, 37),
+                      Color.fromARGB(255, 139, 240, 137)
+                    ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter)), //BoxDecoration
                 child: Column(
                   children: [
                     Row(
@@ -180,7 +161,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           alignment: Alignment.topLeft,
                           icon: const Icon(
                             Icons.arrow_back,
-                            color: Colors.white,
+                            color: Color.fromARGB(255, 0, 0, 0),
                           ),
                           onPressed: () {
                             Navigator.of(context).pop();
@@ -195,14 +176,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           Text(
                             value[0].username,
                             style: const TextStyle(
-                                color: Colors.white,
+                                color: Color.fromARGB(255, 0, 0, 0),
                                 fontWeight: FontWeight.w600,
                                 fontSize: 25),
                           ),
                           Text(
                             value[0].email,
                             style: const TextStyle(
-                                color: Colors.white,
+                                color: Color.fromARGB(255, 0, 0, 0),
                                 fontWeight: FontWeight.w600),
                           )
                         ],
@@ -215,43 +196,40 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 height: 10,
               ),
               DrawerItem(
-                title: 'My Profile',
+                title: 'Home',
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, 'home');
                 },
               ),
               DrawerItem(
-                title: 'Goals',
+                title: 'About',
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, 'About');
                 },
               ),
               DrawerItem(
-                title: 'Journals',
+                title: 'Privacy Policy',
                 onTap: () {
-                  Navigator.pop(context);
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return privacydialoge(mdFileName: 'privacy_policy.md');
+                      });
                 },
               ),
               DrawerItem(
-                title: 'Memories',
+                title: 'Terms of Service',
                 onTap: () {
-                  Navigator.pop(context);
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return privacydialoge(
+                            mdFileName: 'terms_and_condition.md');
+                      });
                 },
               ),
-              DrawerItem(
-                title: 'Reminders',
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              DrawerItem(
-                title: 'Habits',
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              const SizedBox(
-                height: 100,
+              SizedBox(
+                height: size.height * 0.30,
               ),
               const Divider(
                 thickness: 2,
@@ -261,12 +239,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ),
               const SizedBox(
                 height: 10,
-              ),
-              DrawerItem(
-                title: 'Settings',
-                onTap: () {
-                  Navigator.pop(context);
-                },
               ),
               ListTile(
                   leading: const Icon(
@@ -333,7 +305,7 @@ class DrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 50,
       child: Card(
         color: const Color.fromARGB(255, 128, 127, 127),

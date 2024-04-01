@@ -33,7 +33,7 @@ class IntroOne extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                         width: 300,
                         child: Animate(
                           effects: [FadeEffect(duration: 1000.ms),const SlideEffect(curve:Curves.easeIn)],
@@ -59,7 +59,7 @@ class IntroOne extends StatelessWidget {
               child: Row(
                 children: [
                   Animate(
-                    effects: [FadeEffect(duration: 1000.ms),const SlideEffect(curve:Curves.easeIn),FlipEffect(curve: Curves.easeIn)],
+                    effects: [FadeEffect(duration: 1000.ms),const SlideEffect(curve:Curves.easeIn),const FlipEffect(curve: Curves.easeIn)],
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pushNamed(context, 'welcome');

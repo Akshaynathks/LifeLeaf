@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:life_leaf/controller/memories_db_functions/memories_db_functions.dart';
 import 'package:life_leaf/view/screens/Memorie%20_screen/memories_edit.dart';
 import 'package:life_leaf/view/screens/Memorie%20_screen/memories_single_open.dart';
+import 'package:life_leaf/view/widgets/scaffold_messenger.dart';
 
 class MemoriesOpen extends StatefulWidget {
   final String title;
@@ -26,7 +26,7 @@ class _MemoriesOpenState extends State<MemoriesOpen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 62, 62, 62),
+      backgroundColor: const Color.fromARGB(255, 62, 62, 62),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -38,8 +38,10 @@ class _MemoriesOpenState extends State<MemoriesOpen> {
         ),
         title: Text(
           widget.title,
-          style: TextStyle(
-              color: Color.fromARGB(255, 169, 249, 172), fontSize: 20),
+          style: const TextStyle(
+              color: Color.fromARGB(255, 227, 251, 92),
+              fontSize: 25,
+              fontWeight: FontWeight.w800),
         ),
         actions: [
           PopupMenuButton(
@@ -47,7 +49,7 @@ class _MemoriesOpenState extends State<MemoriesOpen> {
             iconSize: 30,
             itemBuilder: (context) => [
               PopupMenuItem(
-                child: ListTile(
+                child: const ListTile(
                   leading: Icon(Icons.edit),
                   title: Text('Edit'),
                 ),
@@ -64,13 +66,17 @@ class _MemoriesOpenState extends State<MemoriesOpen> {
                 },
               ),
               PopupMenuItem(
-                child: ListTile(
+                child: const ListTile(
                   leading: Icon(Icons.delete),
                   title: Text('Delete'),
                 ),
-                onTap: () {
-                  MemoriesDb.deleteMemories(widget.mkey);
-                  Navigator.pop(context);
+                onTap: () async {
+                  bool confirmed = await showDeleteConfirmation(context);
+                  if (confirmed) {
+                    MemoriesDb.deleteMemories(widget.mkey);
+                    // ignore: use_build_context_synchronously
+                    Navigator.pop(context);
+                  }
                 },
               ),
             ],

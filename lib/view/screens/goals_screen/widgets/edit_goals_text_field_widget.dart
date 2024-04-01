@@ -41,12 +41,12 @@ class _EditGoalsTextFieldWidgetState extends State<EditGoalsTextFieldWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(bottom: 5),
+              padding: const EdgeInsets.only(bottom: 5),
               child: Row(
                 children: [
                   Text(
                     widget.step,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   // Spacer(),
                   // IconButton(
@@ -62,7 +62,7 @@ class _EditGoalsTextFieldWidgetState extends State<EditGoalsTextFieldWidget> {
               controller: widget.titleController,
               // initialValue: widget.titleControllertext,
               keyboardType: TextInputType.text,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Title",
                 labelStyle: TextStyle(color: Colors.white),
                 enabledBorder: OutlineInputBorder(
@@ -84,16 +84,16 @@ class _EditGoalsTextFieldWidgetState extends State<EditGoalsTextFieldWidget> {
                 }
                 return null;
               },
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             TextFormField(
               controller: widget.descriptionController,
               // initialValue: widget.descriptionControllertext,
               keyboardType: TextInputType.text,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Description",
                 labelStyle: TextStyle(color: Colors.white),
                 enabledBorder: OutlineInputBorder(
@@ -115,17 +115,17 @@ class _EditGoalsTextFieldWidgetState extends State<EditGoalsTextFieldWidget> {
                 }
                 return null;
               },
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               maxLines: 4,
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             TextFormField(
               controller: widget.dateController,
               // initialValue: widget.dateControllertext,
               keyboardType: TextInputType.datetime,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Target Date",
                 labelStyle: TextStyle(color: Colors.white),
                 enabledBorder: OutlineInputBorder(
@@ -149,7 +149,7 @@ class _EditGoalsTextFieldWidgetState extends State<EditGoalsTextFieldWidget> {
               },
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(
-                    barrierColor: Color.fromARGB(255, 169, 249, 172),
+                    barrierColor:  const Color.fromARGB(255, 38, 36, 36),
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime(1950),
@@ -157,19 +157,15 @@ class _EditGoalsTextFieldWidgetState extends State<EditGoalsTextFieldWidget> {
                     lastDate: DateTime(2100));
 
                 if (pickedDate != null) {
-                  print(
-                      pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
                   String formattedDate =
                       DateFormat('yyyy-MM-dd').format(pickedDate);
-                  print(
-                      formattedDate); //formatted date output using intl package =>  2021-03-16
                   setState(() {
                     widget.dateController.text =
                         formattedDate; //set output date to TextField value.
                   });
                 } else {}
               },
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ],
         ),

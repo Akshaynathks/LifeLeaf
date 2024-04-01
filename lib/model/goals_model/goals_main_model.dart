@@ -10,10 +10,13 @@ class GoalsMainModel {
   final List<GoalsModel> goalList;
   @HiveField(2)
   String? key;
+  @HiveField(3)
+  int? isMarked;
 
   GoalsMainModel({
     this.key,
     required this.goalList,
     required this.goalTitle,
+    required this.isMarked,
   });
 }

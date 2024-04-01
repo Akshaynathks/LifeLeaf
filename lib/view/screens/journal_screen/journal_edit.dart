@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,13 +7,13 @@ import 'package:life_leaf/controller/journal_db_functions/journals_db_functions.
 import 'package:life_leaf/model/journal_model/journal_model.dart';
 import 'package:life_leaf/view/widgets/scaffold_messenger.dart';
 
-class journalEdit extends StatefulWidget {
+class JournalEdit extends StatefulWidget {
   final String date;
   final String title;
   final String note;
   final String jkey;
   final List<String?> images;
-  const journalEdit(
+  const JournalEdit(
       {super.key,
       required this.date,
       required this.title,
@@ -23,20 +22,19 @@ class journalEdit extends StatefulWidget {
       required this.images});
 
   @override
-  State<journalEdit> createState() => _journalEditState();
+  State<JournalEdit> createState() => _JournalEditState();
 }
 
-class _journalEditState extends State<journalEdit> {
+class _JournalEditState extends State<JournalEdit> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController _title = TextEditingController();
-  TextEditingController _notes = TextEditingController();
-  TextEditingController _date = TextEditingController();
+  final TextEditingController _title = TextEditingController();
+  final  TextEditingController _notes = TextEditingController();
+  final  TextEditingController _date = TextEditingController();
   List<String?> selectedImages = [];
   final picker = ImagePicker();
 
   @override
   void initState() {
-    // TODO: implement initState
     _title.text = widget.title;
     _notes.text = widget.note;
     _date.text = widget.date;
@@ -76,7 +74,7 @@ class _journalEditState extends State<journalEdit> {
           },
           onTap: () async {
             DateTime? pickedDate = await showDatePicker(
-                barrierColor: const Color.fromARGB(255, 169, 249, 172),
+                barrierColor: const Color.fromARGB(255, 62, 62, 62),
                 context: context,
                 initialDate: DateTime.now(),
                 firstDate: DateTime(1950),
@@ -84,12 +82,8 @@ class _journalEditState extends State<journalEdit> {
                 lastDate: DateTime(2100));
 
             if (pickedDate != null) {
-              print(
-                  pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
               String formattedDate =
                   DateFormat('yyyy-MM-dd').format(pickedDate);
-              print(
-                  formattedDate); //formatted date output using intl package =>  2021-03-16
               setState(() {
                 _date.text =
                     formattedDate; //set output date to TextField value.
@@ -208,9 +202,9 @@ class _journalEditState extends State<journalEdit> {
                             onPressed: () {
                               getImages();
                             },
-                            child: const Icon(Icons.add),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(70)),
+                            child: const Icon(Icons.add),
                           ),
                         ),
                       ],
@@ -255,11 +249,11 @@ class _journalEditState extends State<journalEdit> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color.fromARGB(255, 113, 191, 117),
+        backgroundColor:  const Color.fromARGB(255, 233, 233, 233),
         title: const Text('Are you sure?'),
         content: const Text(
           'Do you want to go back?',
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          style: TextStyle(color:  Color.fromARGB(255, 146, 5, 5), fontWeight: FontWeight.bold),
         ),
         actions: [
           TextButton(

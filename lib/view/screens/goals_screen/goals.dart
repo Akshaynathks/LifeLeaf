@@ -1,41 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
 import 'package:life_leaf/controller/goals_db_functions/goals_db_functions.dart';
 import 'package:life_leaf/model/goals_model/goals_main_model.dart';
 import 'package:life_leaf/view/screens/goals_screen/widgets/goal_card_widget.dart';
-
-class CustomSearchBar extends StatelessWidget {
-  const CustomSearchBar({
-    Key? key,
-    required this.onSearch,
-  }) : super(key: key);
-
-  final void Function(String) onSearch;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        height: 50,
-        width: 500,
-        child: CupertinoSearchTextField(
-          backgroundColor: Color.fromARGB(255, 127, 128, 127),
-          prefixIcon:
-              Icon(Icons.search, color: Color.fromARGB(255, 169, 249, 172)),
-          placeholder: 'Search...',
-          itemColor: Color.fromARGB(255, 169, 249, 172),
-          style: TextStyle(color: Colors.white),
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          borderRadius: BorderRadius.circular(10.0),
-          onSubmitted: onSearch,
-        ),
-      ),
-    );
-  }
-}
+import 'package:life_leaf/view/widgets/search.dart';
 
 class Goals extends StatefulWidget {
   const Goals({Key? key}) : super(key: key);
@@ -45,86 +14,172 @@ class Goals extends StatefulWidget {
 }
 
 class _GoalsState extends State<Goals> {
-  // late List<GoalsMainModel> allJournals = goalsNotifier.value;
-  // late List<GoalsMainModel> filteredJournals = [];
+  bool _isSearchBarVisible = false;
+  late Box<GoalsMainModel> goalsBox;
+  List<GoalsMainModel> searchList = [];
+  List<GoalsMainModel> allGoals = [];
 
+  @override
   void initState() {
     super.initState();
     GoalDb.getGoals();
+    goalsBox = Hive.box<GoalsMainModel>("goal_details");
+    allGoals = goalsBox.values.toList();
   }
 
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 49, 49, 49),
-      body: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-        child: Stack(
-          children: [
-            ValueListenableBuilder<List<GoalsMainModel>>(
-              valueListenable: goalsNotifier,
-              builder: (context, value, child) {
-                return value.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: value
-                            .length, // Adjust this based on your actual item count
-                        itemBuilder: (context, index) {
-                          return GoalsCardWidget(
-                            title: value[index].goalTitle ?? '',
-                            stepss: value[index].goalList,
-                            mainKey: value[index].key ?? '',
-                            goal: value[index],
-                            stepkey: value[index].goalList[0].key ?? '',
-                          ); // You can modify this to display data based on the index
+      backgroundColor: const Color.fromARGB(255, 49, 49, 49),
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              if (_isSearchBarVisible) // Step 3: Conditionally render the CustomSearchBar
+                Positioned(
+                  top: -5,
+                  left: 20,
+                  child: CustomSearchBar(
+                    onSearch: (value) async {
+                      searchRemainder(value);
+                    },
+                    searchController: searchController,
+                  ),
+                ),
+              Expanded(
+                child: ValueListenableBuilder<List<GoalsMainModel>>(
+                  valueListenable: goalsNotifier,
+                  builder: (context, value, child) {
+                    return searchController.text == ''
+                        ? ListView.builder(
+                            itemCount: value
+                                .length, // Adjust this based on your actual item count
+                            itemBuilder: (context, index) {
+                              return GoalsCardWidget(
+                                title: value[index].goalTitle ?? '',
+                                stepss: value[index].goalList,
+                                mainKey: value[index].key ?? '',
+                                goal: value[index],
+                                stepkey: value[index].goalList[0].key ?? '',
+                                isMarked: value[index].isMarked ?? 0,
+                              ); // You can modify this to display data based on the index
+                            },
+                          )
+                        : searchController.text != ''
+                            ? ListView.builder(
+                                itemCount: searchList
+                                    .length, // Adjust this based on your actual item count
+                                itemBuilder: (context, index) {
+                                  return GoalsCardWidget(
+                                    title: searchList[index].goalTitle ?? '',
+                                    stepss: searchList[index].goalList,
+                                    mainKey: searchList[index].key ?? '',
+                                    goal: searchList[index],
+                                    stepkey:
+                                        searchList[index].goalList[0].key ?? '',
+                                    isMarked: searchList[index].isMarked ?? 0,
+                                  ); // You can modify this to display data based on the index
+                                },
+                              )
+                            : const Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 200,
+                                    ),
+                                    Text(
+                                      'No Goals',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: 'Times',
+                                          fontWeight: FontWeight.bold,
+                                          color: Color.fromARGB(
+                                              255, 113, 191, 117)),
+                                    ),
+                                    SizedBox(
+                                      width: 200,
+                                      child: Text(
+                                        'Create Your Goals and it will show up here',
+                                        style: TextStyle(
+                                            fontFamily: 'Courier',
+                                            color: Color.fromARGB(
+                                                255, 195, 191, 191)),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                  },
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            top: 580,
+            left: 280,
+            child: FloatingActionButton(
+              backgroundColor: const Color.fromARGB(255, 127, 128, 127),
+              foregroundColor: const Color.fromARGB(255, 169, 249, 172),
+              onPressed: () {
+                Navigator.pushNamed(context, 'addGoal');
+              },
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(70)),
+              child: const Icon(Icons.add),
+            ),
+          ),
+          Positioned(
+            top: -10,
+            right: -3,
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 40,
+                  height: 60,
+                  child: Builder(
+                    builder: (context) {
+                      return ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: const MaterialStatePropertyAll(
+                              Color.fromRGBO(26, 26, 26, 1)),
+                          shape: MaterialStatePropertyAll(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          padding: const MaterialStatePropertyAll(
+                            EdgeInsets.only(left: 3, top: 8),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isSearchBarVisible =
+                                !_isSearchBarVisible; // Toggle visibility
+                          });
                         },
-                      )
-                    : Center(
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 200,
-                            ),
-                            Text(
-                              'No Goals',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'Times',
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 113, 191, 117)),
-                            ),
-                            SizedBox(
-                              width: 200,
-                              child: Text(
-                                'Create Your Goals and it will show up here',
-                                style: TextStyle(
-                                    fontFamily: 'Courier',
-                                    color: Color.fromARGB(255, 195, 191, 191)),
-                              ),
-                            )
-                          ],
+                        child: const Icon(
+                          Icons.search_sharp,
+                          color: Colors.white,
                         ),
                       );
-              },
+                    },
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              top: 580,
-              left: 280,
-              child: FloatingActionButton(
-                backgroundColor: Color.fromARGB(255, 127, 128, 127),
-                foregroundColor: Color.fromARGB(255, 169, 249, 172),
-                onPressed: () {
-                  Navigator.pushNamed(context, 'addGoal');
-                },
-                child: Icon(Icons.add),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(70)),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+  }
+
+  searchRemainder(String value) async {
+    setState(() {
+      searchList = allGoals
+          .where((element) =>
+              element.goalTitle!.toLowerCase().startsWith(value.toLowerCase()))
+          .toList();
+    });
   }
 }

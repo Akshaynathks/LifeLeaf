@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:life_leaf/controller/memories_db_functions/memories_db_functions.dart';
 import 'package:life_leaf/model/memories_model/memories_model.dart';
+import 'package:life_leaf/view/widgets/scaffold_messenger.dart';
 
 class OpenImage extends StatefulWidget {
   final String mkey;
@@ -29,7 +29,6 @@ class _OpenImageState extends State<OpenImage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     mainImgs = widget.mainImg;
     imagess = widget.imagesss;
     titlee = widget.title;
@@ -45,30 +44,34 @@ class _OpenImageState extends State<OpenImage> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back,
               color: Colors.white,
             )),
         actions: [
           IconButton(
-              onPressed: () {
-                imagess.remove(widget.image);
-                final updatedmemory = MemoriesModel(
-                    mkey: widget.mkey,
-                    title: titlee,  
-                    images: imagess,
-                    mainImage: widget.mainImg);
-                MemoriesDb.updateMemories(updatedmemory);
-                MemoriesDb.getMemories();
-                Navigator.pop(context);
+              onPressed: () async {
+                bool confirmed = await showDeleteConfirmation(context);
+                if (confirmed) {
+                  imagess.remove(widget.image);
+                  final updatedmemory = MemoriesModel(
+                      mkey: widget.mkey,
+                      title: titlee,
+                      images: imagess,
+                      mainImage: widget.mainImg);
+                  MemoriesDb.updateMemories(updatedmemory);
+                  MemoriesDb.getMemories();
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
+                }
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.delete,
                 color: Colors.white,
               ))
         ],
       ),
-      backgroundColor: Color.fromARGB(255, 67, 67, 64),
+      backgroundColor: const Color.fromARGB(255, 67, 67, 64),
       body: Center(
         child: Container(
           width: double.infinity,

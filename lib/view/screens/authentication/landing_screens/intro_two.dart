@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class IntroTwo extends StatelessWidget {
@@ -18,24 +17,24 @@ class IntroTwo extends StatelessWidget {
             ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 60,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 70,
                 ),
-                Container(
+                SizedBox(
                     width: size.width * 0.9,
-                    child: Image(
+                    child: const Image(
                         image: AssetImage(
                             'assets/output-onlinepngtools (2).png'))),
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                         width: 300,
                         child: Text(
                           '"Capture the moments, cherish the memories, and let them inspire your journey forward."',
@@ -55,7 +54,7 @@ class IntroTwo extends StatelessWidget {
             left: size.width * 0.1,
             child: SizedBox(
               width: size.width * 0.8,
-              child: Row(
+              child: const Row(
                 children: [
                   Spacer(),
                   Text(

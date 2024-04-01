@@ -1,11 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:life_leaf/controller/memories_db_functions/memories_db_functions.dart';
 import 'package:life_leaf/model/memories_model/memories_model.dart';
-import 'package:life_leaf/view/screens/home_screen/Home.dart';
 import 'package:life_leaf/view/widgets/scaffold_messenger.dart';
 
 class MemoriesEdit extends StatefulWidget {
@@ -26,14 +24,14 @@ class MemoriesEdit extends StatefulWidget {
 
 class _MemoriesEditState extends State<MemoriesEdit> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController _title = TextEditingController();
+  final TextEditingController _title = TextEditingController();
 
   List<String?> selectedImagess = [];
   String? mainImage;
   final picker = ImagePicker();
 
+  @override
   void initState() {
-    // TODO: implement initState
     _title.text = widget.title;
 
     selectedImagess = widget.images;
@@ -52,37 +50,9 @@ class _MemoriesEditState extends State<MemoriesEdit> {
           color: Colors.white,
           onPressed: () {
             confirmation(context);
-            // Navigator.pop(context);
           },
         ),
-        // title: Text(
-        //   formattedDate,
-        //   style: TextStyle(
-        //       color: Color.fromARGB(255, 169, 249, 172), fontSize: 15),
-        // ),
-        title: const Text('Add Memories'),
-        actions: [
-          PopupMenuButton(
-            iconColor: Colors.white,
-            iconSize: 30,
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                child: const ListTile(
-                  leading: Icon(Icons.edit),
-                  title: Text('Edit'),
-                ),
-                onTap: () {},
-              ),
-              PopupMenuItem(
-                child: const ListTile(
-                  leading: Icon(Icons.delete),
-                  title: Text('Delete'),
-                ),
-                onTap: () {},
-              ),
-            ],
-          )
-        ],
+        title: const Text('Edit Memories',style: TextStyle(color:Color.fromARGB(255, 227, 251, 92), fontSize: 25,fontWeight: FontWeight.w800),),
       ),
       body: SingleChildScrollView(
         child: Column(children: [
@@ -156,9 +126,9 @@ class _MemoriesEditState extends State<MemoriesEdit> {
                             onPressed: () {
                               getMainImages();
                             },
-                            child: const Icon(Icons.add),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(70)),
+                            child: const Icon(Icons.add),
                           ),
                         ),
                       ],
@@ -209,9 +179,9 @@ class _MemoriesEditState extends State<MemoriesEdit> {
                             onPressed: () {
                               getImages();
                             },
-                            child: const Icon(Icons.add),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(70)),
+                            child: const Icon(Icons.add),
                           ),
                         ),
                       ],
@@ -255,11 +225,13 @@ class _MemoriesEditState extends State<MemoriesEdit> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color.fromARGB(255, 113, 191, 117),
+        backgroundColor: const Color.fromARGB(255, 233, 233, 233),
         title: const Text('Are you sure?'),
         content: const Text(
           'Do you want to go back?',
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Color.fromARGB(255, 146, 5, 5),
+              fontWeight: FontWeight.bold),
         ),
         actions: [
           TextButton(

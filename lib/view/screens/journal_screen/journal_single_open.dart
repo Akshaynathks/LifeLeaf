@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:life_leaf/controller/journal_db_functions/journals_db_functions.dart';
-import 'package:life_leaf/controller/memories_db_functions/memories_db_functions.dart';
 import 'package:life_leaf/model/journal_model/journal_model.dart';
-import 'package:life_leaf/model/memories_model/memories_model.dart';
+import 'package:life_leaf/view/widgets/scaffold_messenger.dart';
 
 class OpenJournalImage extends StatefulWidget {
   final String mkey;
@@ -33,7 +31,6 @@ class _OpenJournalImageState extends State<OpenJournalImage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     dates = widget.date;
     imagess = widget.imagesss;
     titlee = widget.title;
@@ -49,31 +46,35 @@ class _OpenJournalImageState extends State<OpenJournalImage> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back,
               color: Colors.white,
             )),
         actions: [
           IconButton(
-              onPressed: () {
-                imagess.remove(widget.image);
-                final updatedJournal = JournalModel(
-                    journalkey: widget.mkey,
-                    journalTitle: titlee,
-                    images: imagess,
-                    journalDate: widget.date,
-                    journalNotes: widget.note);
-                JournalDb.updateJournal(updatedJournal);
-                JournalDb.getjournals();
-                Navigator.pop(context);
+              onPressed: () async {
+                bool confirmed = await showDeleteConfirmation(context);
+                if (confirmed) {
+                  imagess.remove(widget.image);
+                  final updatedJournal = JournalModel(
+                      journalkey: widget.mkey,
+                      journalTitle: titlee,
+                      images: imagess,
+                      journalDate: widget.date,
+                      journalNotes: widget.note);
+                  JournalDb.updateJournal(updatedJournal);
+                  JournalDb.getjournals();
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
+                }
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.delete,
                 color: Colors.white,
               ))
         ],
       ),
-      backgroundColor: Color.fromARGB(255, 67, 67, 64),
+      backgroundColor: const Color.fromARGB(255, 67, 67, 64),
       body: Center(
         child: Container(
           width: double.infinity,

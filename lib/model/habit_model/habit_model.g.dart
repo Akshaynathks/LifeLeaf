@@ -1,41 +1,41 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'goals_main_model.dart';
+part of 'habit_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class GoalsMainModelAdapter extends TypeAdapter<GoalsMainModel> {
+class HabitModelAdapter extends TypeAdapter<HabitModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 6;
 
   @override
-  GoalsMainModel read(BinaryReader reader) {
+  HabitModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return GoalsMainModel(
-      key: fields[2] as String?,
-      goalList: (fields[1] as List).cast<GoalsModel>(),
-      goalTitle: fields[0] as String?,
-      isMarked: fields[3] as int?,
+    return HabitModel(
+      hkey: fields[2] as String?,
+      title: fields[0] as String,
+      maxCompleated: (fields[1] as List).cast<String>(),
+      maxSkipped: fields[3] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, GoalsMainModel obj) {
+  void write(BinaryWriter writer, HabitModel obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.goalTitle)
+      ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.goalList)
+      ..write(obj.maxCompleated)
       ..writeByte(2)
-      ..write(obj.key)
+      ..write(obj.hkey)
       ..writeByte(3)
-      ..write(obj.isMarked);
+      ..write(obj.maxSkipped);
   }
 
   @override
@@ -44,7 +44,7 @@ class GoalsMainModelAdapter extends TypeAdapter<GoalsMainModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is GoalsMainModelAdapter &&
+      other is HabitModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

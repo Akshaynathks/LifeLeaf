@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -19,20 +18,20 @@ class IntroThree extends StatelessWidget {
             ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 150,
                 ),
-                Container(
-                    width: size.width * 0.9,
-                    child: Image(
-                        image: AssetImage('assets/output-onlinepngtools.png'))),
                 SizedBox(
+                    width: size.width * 0.9,
+                    child: const Image(
+                        image: AssetImage('assets/output-onlinepngtools.png'))),
+                const SizedBox(
                   height: 50,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                         width: 300,
                         child: Text(
                           '"In the pursuit of your dreams, set goals as stars to guide you and celebrate each achievement as a beacon of your journeys brilliance."',
@@ -51,7 +50,7 @@ class IntroThree extends StatelessWidget {
             top: size.height * 0.9,
             left: size.width * 0.7,
             child: Animate(
-              effects: [FlipEffect(curve: Curves.easeIn)],
+              effects: const [FlipEffect(curve: Curves.easeIn)],
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, 'welcome');

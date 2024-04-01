@@ -1,41 +1,41 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'goals_main_model.dart';
+part of 'reminder_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class GoalsMainModelAdapter extends TypeAdapter<GoalsMainModel> {
+class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 5;
 
   @override
-  GoalsMainModel read(BinaryReader reader) {
+  ReminderModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return GoalsMainModel(
-      key: fields[2] as String?,
-      goalList: (fields[1] as List).cast<GoalsModel>(),
-      goalTitle: fields[0] as String?,
-      isMarked: fields[3] as int?,
+    return ReminderModel(
+      rkey: fields[2] as String?,
+      title: fields[0] as String,
+      description: fields[1] as String,
+      date: fields[3] as String?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, GoalsMainModel obj) {
+  void write(BinaryWriter writer, ReminderModel obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.goalTitle)
+      ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.goalList)
+      ..write(obj.description)
       ..writeByte(2)
-      ..write(obj.key)
+      ..write(obj.rkey)
       ..writeByte(3)
-      ..write(obj.isMarked);
+      ..write(obj.date);
   }
 
   @override
@@ -44,7 +44,7 @@ class GoalsMainModelAdapter extends TypeAdapter<GoalsMainModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is GoalsMainModelAdapter &&
+      other is ReminderModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

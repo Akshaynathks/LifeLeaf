@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,18 +7,18 @@ import 'package:life_leaf/controller/journal_db_functions/journals_db_functions.
 import 'package:life_leaf/model/journal_model/journal_model.dart';
 import 'package:life_leaf/view/widgets/scaffold_messenger.dart';
 
-class journalAdd extends StatefulWidget {
-  const journalAdd({super.key});
+class JournalAdd extends StatefulWidget {
+  const JournalAdd({super.key});
 
   @override
-  State<journalAdd> createState() => _journalAddState();
+  State<JournalAdd> createState() => _JournalAddState();
 }
 
-class _journalAddState extends State<journalAdd> {
+class _JournalAddState extends State<JournalAdd> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController _title = TextEditingController();
-  TextEditingController _notes = TextEditingController();
-  TextEditingController _date = TextEditingController();
+  final  TextEditingController _title = TextEditingController();
+  final  TextEditingController _notes = TextEditingController();
+  final  TextEditingController _date = TextEditingController();
   String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
   List<String> selectedImages = [];
@@ -38,27 +37,10 @@ class _journalAddState extends State<journalAdd> {
             // Navigator.pop(context);
           },
         ),
-        // title: Text(
-        //   formattedDate,
-        //   style: TextStyle(
-        //       color: Color.fromARGB(255, 169, 249, 172), fontSize: 15),
-        // ),
-        title: TextFormField(
-          controller: _date,
-          keyboardType: TextInputType.datetime,
-          decoration: const InputDecoration(
-            labelText: "Tap to add Date",
-            labelStyle: TextStyle(color: Colors.white),
-          ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please fill The date';
-            }
-            return null;
-          },
-          onTap: () async {
+        title: TextButton(
+          onPressed: () async {
             DateTime? pickedDate = await showDatePicker(
-                barrierColor: const Color.fromARGB(255, 169, 249, 172),
+                barrierColor:const Color.fromARGB(255, 62, 62, 62),
                 context: context,
                 initialDate: DateTime.now(),
                 firstDate: DateTime(1950),
@@ -66,18 +48,18 @@ class _journalAddState extends State<journalAdd> {
                 lastDate: DateTime(2100));
 
             if (pickedDate != null) {
-              print(
-                  pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
               formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-              print(
-                  formattedDate); //formatted date output using intl package =>  2021-03-16
               setState(() {
                 _date.text =
                     formattedDate; //set output date to TextField value.
               });
             } else {}
           },
-          style: const TextStyle(color: Colors.white),
+          child: Text(
+            formattedDate,
+            style: const TextStyle(
+                color:Color.fromARGB(255, 227, 251, 92), fontSize: 15),
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -188,9 +170,9 @@ class _journalAddState extends State<journalAdd> {
                             onPressed: () {
                               getImages();
                             },
-                            child: const Icon(Icons.add),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(70)),
+                            child: const Icon(Icons.add),
                           ),
                         ),
                       ],
@@ -211,7 +193,6 @@ class _journalAddState extends State<journalAdd> {
                             const Color.fromARGB(255, 127, 128, 127)),
                     onPressed: () {
                       saveJournalToDb();
-                      print(selectedImages);
                     },
                     child: const Text(
                       'Save',
@@ -235,11 +216,13 @@ class _journalAddState extends State<journalAdd> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color.fromARGB(255, 113, 191, 117),
+        backgroundColor: const Color.fromARGB(255, 233, 233, 233),
         title: const Text('Are you sure?'),
         content: const Text(
           'Do you want to go back?',
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Color.fromARGB(255, 146, 5, 5),
+              fontWeight: FontWeight.bold),
         ),
         actions: [
           TextButton(
@@ -255,8 +238,8 @@ class _journalAddState extends State<journalAdd> {
           ),
           TextButton(
             onPressed: () {
-               Navigator.pop(context);
-                Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.pop(context);
             },
             child: const Text(
               'Yes',

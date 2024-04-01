@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:life_leaf/controller/journal_db_functions/journals_db_functions.dart';
 import 'package:life_leaf/view/screens/journal_screen/journal_edit.dart';
 import 'package:life_leaf/view/screens/journal_screen/journal_single_open.dart';
+import 'package:life_leaf/view/widgets/scaffold_messenger.dart';
 
 class JournalOpen extends StatefulWidget {
   final String title;
@@ -42,7 +42,9 @@ class _JournalOpenState extends State<JournalOpen> {
         title: Text(
           widget.title,
           style: const TextStyle(
-              color: Color.fromARGB(255, 169, 249, 172), fontSize: 20),
+              color: Color.fromARGB(255, 227, 251, 92),
+              fontSize: 25,
+              fontWeight: FontWeight.w800),
         ),
         actions: [
           PopupMenuButton(
@@ -58,7 +60,7 @@ class _JournalOpenState extends State<JournalOpen> {
                   Navigator.push(
                       context,
                       CupertinoPageRoute(
-                        builder: (context) => journalEdit(
+                        builder: (context) => JournalEdit(
                           date: widget.date,
                           title: widget.title,
                           note: widget.note,
@@ -73,9 +75,13 @@ class _JournalOpenState extends State<JournalOpen> {
                   leading: Icon(Icons.delete),
                   title: Text('Delete'),
                 ),
-                onTap: () {
-                  JournalDb.deleteJournal(widget.jkey);
-                  Navigator.pop(context);
+                onTap: () async {
+                  bool confirmed = await showDeleteConfirmation(context);
+                  if (confirmed) {
+                    JournalDb.deleteJournal(widget.jkey);
+                    // ignore: use_build_context_synchronously
+                    Navigator.pop(context);
+                  }
                 },
               ),
             ],
@@ -103,8 +109,7 @@ class _JournalOpenState extends State<JournalOpen> {
               style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
-                  fontWeight: FontWeight.w700
-                  ),
+                  fontWeight: FontWeight.w700),
             ),
             const SizedBox(
               height: 20,

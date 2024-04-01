@@ -1,8 +1,9 @@
+// ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:life_leaf/controller/user_db_function/authentication_db_function.dart';
 import 'package:life_leaf/view/screens/authentication/function/authentication_function.dart';
-import 'package:life_leaf/view/screens/home_screen/Home.dart';
+import 'package:life_leaf/view/screens/home_screen/home_screen.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -105,10 +106,10 @@ class _SigninState extends State<Signin> {
                                 borderSide: BorderSide(color: Colors.white)),
                             focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
-                            errorBorder: const OutlineInputBorder(
+                            errorBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.red),
                             ),
-                            focusedErrorBorder: const OutlineInputBorder(
+                            focusedErrorBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.red),
                             ),
                             prefixIcon: Icon(Icons.email),
@@ -175,14 +176,6 @@ class _SigninState extends State<Signin> {
                           SizedBox(
                             width: 155,
                           ),
-                          // TextButton(
-                          //     onPressed: () {},
-                          //     child: Text(
-                          //       'Forgot Password ?',
-                          //       style: TextStyle(
-                          //         color: Colors.black,
-                          //       ),
-                          //     ))
                         ],
                       ),
                       const SizedBox(
@@ -195,7 +188,7 @@ class _SigninState extends State<Signin> {
                           effects: [
                             FadeEffect(duration: 800.ms),
                             const SlideEffect(curve: Curves.easeIn),
-                            FlipEffect(curve: Curves.easeIn)
+                            const FlipEffect(curve: Curves.easeIn)
                           ],
                           child: ElevatedButton(
                             onPressed: () async {
@@ -230,13 +223,6 @@ class _SigninState extends State<Signin> {
                                 }
                               }
                             },
-                            child: const Text(
-                              'Login',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 20,
-                                  color: Colors.black),
-                            ),
                             style: ElevatedButton.styleFrom(
                                 elevation: 0.0,
                                 backgroundColor: Colors.transparent,
@@ -246,6 +232,13 @@ class _SigninState extends State<Signin> {
                                         .withOpacity(0.20),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15))),
+                            child: const Text(
+                              'Login',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 20,
+                                  color: Colors.black),
+                            ),
                           ),
                         ),
                       ),

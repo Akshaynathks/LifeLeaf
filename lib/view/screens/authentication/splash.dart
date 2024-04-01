@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:life_leaf/view/screens/authentication/landing_screens/landing_screen.dart';
-import 'package:life_leaf/view/screens/home_screen/Home.dart';
+import 'package:life_leaf/view/screens/home_screen/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {

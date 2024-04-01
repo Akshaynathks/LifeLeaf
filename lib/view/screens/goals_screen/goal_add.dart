@@ -13,10 +13,10 @@ class AddGoal extends StatefulWidget {
 
 class _AddGoalState extends State<AddGoal> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _title = TextEditingController();
-  TextEditingController _steps = TextEditingController();
-  TextEditingController _date = TextEditingController();
-  TextEditingController mainTitleController = TextEditingController();
+  final TextEditingController _title = TextEditingController();
+  final TextEditingController _steps = TextEditingController();
+  final TextEditingController _date = TextEditingController();
+  final TextEditingController mainTitleController = TextEditingController();
   List<GoalsModel> goalsList = [];
 
   int currentStep = 1;
@@ -28,23 +28,23 @@ class _AddGoalState extends State<AddGoal> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: BackButton(
+          color: Colors.white,
           onPressed: () {
             confirmation(context);
           },
         ),
-        title: Padding(
-          padding: EdgeInsets.only(left: 20),
+        title: const Padding(
+          padding: EdgeInsets.only(left: 28),
           child: Text(
             'Create Goal',
             style: TextStyle(
-                fontSize: 30,
+                fontSize: 25,
                 fontFamily: 'Times',
-                fontWeight: FontWeight.bold,
                 color: Color.fromARGB(255, 145, 233, 151)),
           ),
         ),
       ),
-      backgroundColor: Color.fromARGB(255, 62, 62, 62),
+      backgroundColor: const Color.fromARGB(255, 62, 62, 62),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -53,7 +53,7 @@ class _AddGoalState extends State<AddGoal> {
               child: TextFormField(
                 controller: mainTitleController,
                 keyboardType: TextInputType.text,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Main Title",
                   labelStyle: TextStyle(color: Colors.white),
                   enabledBorder: OutlineInputBorder(
@@ -69,13 +69,7 @@ class _AddGoalState extends State<AddGoal> {
                     borderSide: BorderSide(color: Colors.red),
                   ),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter The title';
-                  }
-                  return null;
-                },
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
             GoalsTextFieldWidget(
@@ -88,12 +82,11 @@ class _AddGoalState extends State<AddGoal> {
             Stack(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 150),
+                  padding: const EdgeInsets.only(top: 150),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       FloatingActionButton(
-                        child: Icon(Icons.add),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(60)),
                         backgroundColor:
@@ -103,36 +96,99 @@ class _AddGoalState extends State<AddGoal> {
                           _addStep();
                           // print(goalsList[0].description);
                         },
+                        child: const Icon(Icons.add),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 50, right: 25),
+                        padding: const EdgeInsets.only(left: 50, right: 25),
                         child: ElevatedButton(
                           onPressed: () {
+                            // Trim the text to remove leading and trailing whitespaces
+                            String mainTitle = mainTitleController.text.trim();
+                            String title = _title.text.trim();
+                            String description = _steps.text.trim();
+                            String date = _date.text.trim();
+
+                            // Check if main title is empty
+                            if (mainTitle.isEmpty) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Main title cannot be empty",
+                                    style: TextStyle(color: Colors.white)),
+                                backgroundColor: Colors.red,
+                              ));
+                              return;
+                            }
+
+                            // Check if goalsList is not empty
                             if (goalsList.isNotEmpty) {
                               final newGoal = GoalsMainModel(
-                                  goalTitle: mainTitleController.text,
-                                  goalList: goalsList);
+                                  goalTitle: mainTitle,
+                                  goalList: goalsList,
+                                  isMarked: 0);
                               _addStep();
                               GoalDb.addGoal(newGoal);
                               GoalDb.getGoals();
                               Navigator.pop(context);
                             } else {
+                              // Check if title, description, and date are not empty
+                              if (title.isEmpty ||
+                                  description.isEmpty ||
+                                  date.isEmpty) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text(
+                                      "Title, description, and date cannot be empty",
+                                      style: TextStyle(color: Colors.white)),
+                                  backgroundColor: Colors.red,
+                                ));
+                                return;
+                              }
+
                               goalsList.add(GoalsModel(
-                                title: _title.text,
-                                description: _steps.text,
-                                targetDate: _date.text,
+                                title: title,
+                                description: description,
+                                targetDate: date,
                                 step: 'Step $currentStep',
                               ));
                               final newGoal = GoalsMainModel(
                                   goalList: goalsList,
-                                  goalTitle: mainTitleController.text);
+                                  goalTitle: mainTitle,
+                                  isMarked: 0);
 
                               GoalDb.addGoal(newGoal);
                               GoalDb.getGoals();
                               Navigator.pop(context);
                             }
                           },
-                          child: Text(
+
+                          // onPressed: () {
+                          //   if (goalsList.isNotEmpty) {
+                          //     final newGoal = GoalsMainModel(
+                          //         goalTitle: mainTitleController.text,
+                          //         goalList: goalsList,
+                          //         isMarked: 0);
+                          //     _addStep();
+                          //     GoalDb.addGoal(newGoal);
+                          //     GoalDb.getGoals();
+                          //     Navigator.pop(context);
+                          //   } else {
+                          //     goalsList.add(GoalsModel(
+                          //       title: _title.text,
+                          //       description: _steps.text,
+                          //       targetDate: _date.text,
+                          //       step: 'Step $currentStep',
+                          //     ));
+                          //     final newGoal = GoalsMainModel(
+                          //         goalList: goalsList,
+                          //         goalTitle: mainTitleController.text,
+                          //         isMarked: 0);
+
+                          //     GoalDb.addGoal(newGoal);
+                          //     GoalDb.getGoals();
+                          //     Navigator.pop(context);
+                          //   }
+                          // },
+                          child: const Text(
                             'Save',
                             style: TextStyle(
                                 color: Colors.black,
@@ -175,11 +231,13 @@ class _AddGoalState extends State<AddGoal> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Color.fromARGB(255, 113, 191, 117),
+        backgroundColor: const Color.fromARGB(255, 233, 233, 233),
         title: const Text('Are you sure?'),
         content: const Text(
           'Do you want to cancel?',
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Color.fromARGB(255, 146, 5, 5),
+              fontWeight: FontWeight.bold),
         ),
         actions: [
           TextButton(

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:life_leaf/controller/user_db_function/authentication_db_function.dart';
 import 'package:life_leaf/model/user_model/user_model.dart';
-import 'package:life_leaf/view/screens/authentication/signin%20.dart';
-// import 'package:life_leaf/view/screens/authentication/function/authentication_function.dart';
+import 'package:life_leaf/view/screens/authentication/sign_in%20.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -13,10 +12,10 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-  TextEditingController _userName = TextEditingController();
-  TextEditingController _email = TextEditingController();
-  TextEditingController _password = TextEditingController();
-  TextEditingController _confirmpass = TextEditingController();
+  final TextEditingController _userName = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _confirmpass = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool isObscure = true;
   bool isObscure2 = true;
@@ -261,7 +260,7 @@ class _SignupState extends State<Signup> {
                           width: 350,
                           height: 60,
                           child: Animate(
-                            effects: [FadeEffect(duration: 800.ms),const SlideEffect(curve:Curves.easeIn),FlipEffect(curve: Curves.easeIn)],
+                            effects: [FadeEffect(duration: 800.ms),const SlideEffect(curve:Curves.easeIn),const FlipEffect(curve: Curves.easeIn)],
                             child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
@@ -394,6 +393,7 @@ class _SignupState extends State<Signup> {
       );
       await UserDb.addUser(newUser);
       await UserDb.getUser();
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor: Colors.green,
@@ -404,6 +404,7 @@ class _SignupState extends State<Signup> {
         ),
       );
 
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
