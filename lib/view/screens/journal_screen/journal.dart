@@ -13,20 +13,32 @@ class Journal extends StatefulWidget {
 }
 
 class _JournalState extends State<Journal> {
-
   bool _isSearchBarVisible = false;
-late Box<JournalModel> journalBox;
+  late Box<JournalModel> journalBox;
   List<JournalModel> searchList = [];
   List<JournalModel> allJournal = [];
 
   @override
+  // void initState() {
+  //   super.initState();
+  //   JournalDb.getjournals();
+  //   journalBox = Hive.box<JournalModel>("journal_details");
+  //   allJournal = journalBox.values.toList();
+  // }
+  @override
   void initState() {
     super.initState();
+    openBox(); // Call openBox() to open the Hive box
     JournalDb.getjournals();
-    journalBox = Hive.box<JournalModel>("journal_details");
+  }
+
+  void openBox() async {
+    await Hive.openBox<JournalModel>("goal_details");
+    journalBox = Hive.box<JournalModel>("goal_details");
     allJournal = journalBox.values.toList();
   }
-TextEditingController searchController=TextEditingController();
+
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,84 +48,137 @@ TextEditingController searchController=TextEditingController();
           Column(
             children: [
               if (_isSearchBarVisible) // Step 3: Conditionally render the CustomSearchBar
-            Positioned(
-               top: -5,
-              left: 20,
-              child: CustomSearchBar(
-               onSearch: (value) async {
-                    searchRemainder(value);
-                  }, searchController: searchController,
-              ),
-            ),
+                Positioned(
+                  top: -5,
+                  left: 20,
+                  child: CustomSearchBar(
+                    onSearch: (value) async {
+                      searchRemainder(value);
+                    },
+                    searchController: searchController,
+                  ),
+                ),
               Expanded(
                 child: ValueListenableBuilder<List<JournalModel>>(
                   valueListenable: journalsNotifier,
                   builder: (context, value, child) {
                     return searchController.text == ''
-                        ? GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 18.0,
-                              crossAxisSpacing: 8.0,
-                            ),
-                            itemCount: value
-                                .length, // Adjust this based on your actual item count
-                            itemBuilder: (context, index) {
-                              return JournalCardWidget(
-                                title: value[index].journalTitle ?? '',
-                                notes: value[index].journalNotes,
-                                date: value[index].journalDate ?? '',
-                                jkey: value[index].journalkey ?? '',
-                                images: value[index].images,
-                              ); // You can modify this to display data based on the index
-                            },
-                          )
-                        :searchController.text != ''? 
-                        GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 18.0,
-                              crossAxisSpacing: 8.0,
-                            ),
-                            itemCount: searchList
-                                .length, // Adjust this based on your actual item count
-                            itemBuilder: (context, index) {
-                              return JournalCardWidget(
-                                title: searchList[index].journalTitle ?? '',
-                                notes: searchList[index].journalNotes,
-                                date: searchList[index].journalDate ?? '',
-                                jkey: searchList[index].journalkey ?? '',
-                                images: searchList[index].images,
-                              ); // You can modify this to display data based on the index
-                            },
-                          ):const Center(
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 200,
+                        ? value.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: value
+                                    .length, // Adjust this based on your actual item count
+                                itemBuilder: (context, index) {
+                                  return JournalCardWidget(
+                                    title: value[index].journalTitle ?? '',
+                                    notes: value[index].journalNotes,
+                                    date: value[index].journalDate ?? '',
+                                    jkey: value[index].journalkey ?? '',
+                                    images: value[index].images,
+                                  ); // You can modify this to display data based on the index
+                                },
+                              )
+                            : const Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 200,
+                                    ),
+                                    Text(
+                                      'No Journals',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: 'Times',
+                                          fontWeight: FontWeight.bold,
+                                          color: Color.fromARGB(
+                                              255, 113, 191, 117)),
+                                    ),
+                                    SizedBox(
+                                      width: 200,
+                                      child: Text(
+                                        'Create Your notes and it will show up here',
+                                        style: TextStyle(
+                                            fontFamily: 'Courier',
+                                            color: Color.fromARGB(
+                                                255, 195, 191, 191)),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                Text(
-                                  'No Journals',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Times',
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 113, 191, 117)),
+                              )
+                        : searchController.text != ''
+                            ? value.isNotEmpty
+                                ? ListView.builder(
+                                    itemCount: searchList
+                                        .length, // Adjust this based on your actual item count
+                                    itemBuilder: (context, index) {
+                                      return JournalCardWidget(
+                                        title: searchList[index].journalTitle ??
+                                            '',
+                                        notes: searchList[index].journalNotes,
+                                        date:
+                                            searchList[index].journalDate ?? '',
+                                        jkey:
+                                            searchList[index].journalkey ?? '',
+                                        images: searchList[index].images,
+                                      ); // You can modify this to display data based on the index
+                                    },
+                                  )
+                                : const Center(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 200,
+                                        ),
+                                        Text(
+                                          'No Journals',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: 'Times',
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                  255, 113, 191, 117)),
+                                        ),
+                                        SizedBox(
+                                          width: 200,
+                                          child: Text(
+                                            'Create Your notes and it will show up here',
+                                            style: TextStyle(
+                                                fontFamily: 'Courier',
+                                                color: Color.fromARGB(
+                                                    255, 195, 191, 191)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                            : const Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 200,
+                                    ),
+                                    Text(
+                                      'No Journals',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: 'Times',
+                                          fontWeight: FontWeight.bold,
+                                          color: Color.fromARGB(
+                                              255, 113, 191, 117)),
+                                    ),
+                                    SizedBox(
+                                      width: 200,
+                                      child: Text(
+                                        'Create Your notes and it will show up here',
+                                        style: TextStyle(
+                                            fontFamily: 'Courier',
+                                            color: Color.fromARGB(
+                                                255, 195, 191, 191)),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 200,
-                                  child: Text(
-                                    'Create Your notes and it will show up here',
-                                    style: TextStyle(
-                                        fontFamily: 'Courier',
-                                        color: Color.fromARGB(255, 195, 191, 191)),
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
+                              );
                   },
                 ),
               ),
@@ -146,7 +211,7 @@ TextEditingController searchController=TextEditingController();
                       return ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: const MaterialStatePropertyAll(
-                              Color.fromRGBO(0, 0, 0, 1)),
+                              Colors.transparent),
                           shape: MaterialStatePropertyAll(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -173,14 +238,18 @@ TextEditingController searchController=TextEditingController();
               ],
             ),
           ),
-          
         ],
       ),
     );
   }
-   searchRemainder(String value)async{
-setState(() {
-  searchList=allJournal.where((element) => element.journalTitle!.toLowerCase().startsWith(value.toLowerCase())).toList();
-}); }
 
+  searchRemainder(String value) async {
+    setState(() {
+      searchList = allJournal
+          .where((element) => element.journalTitle!
+              .toLowerCase()
+              .startsWith(value.toLowerCase()))
+          .toList();
+    });
+  }
 }

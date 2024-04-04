@@ -39,15 +39,6 @@ class _HabitOpenState extends State<HabitOpen> {
     List<String> datesnew = widget.maxcompleate;
     datesnew = datesnew.toSet().toList();
 
-    String formatDate(DateTime dateTime) {
-      return DateFormat('yyyy/MM/dd').format(dateTime);
-    }
-
-    String formattedDate = formatDate(DateTime.now());
-
-    List<String> parts = formattedDate.split('/');
-    int day = int.parse(parts[2]);
-
     String initialDateString = widget.maxskipped;
 
     // Parse the initial date string into a DateTime object
@@ -113,7 +104,7 @@ class _HabitOpenState extends State<HabitOpen> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Container(
-                color: Color.fromARGB(255, 255, 255, 255),
+                color: const Color.fromARGB(255, 255, 255, 255),
                 child: CleanCalendar(
                   selectedDates: initialDateTimeList,
                   selectedDatesProperties: DatesProperties(
@@ -127,7 +118,8 @@ class _HabitOpenState extends State<HabitOpen> {
                       datesDecoration: DatesDecoration(
                           datesBackgroundColor:
                               const Color.fromARGB(255, 149, 240, 152),
-                          datesBorderColor: Color.fromARGB(255, 255, 0, 0))),
+                          datesBorderColor:
+                              const Color.fromARGB(255, 255, 0, 0))),
                   datesForStreaks: dates,
                   leadingTrailingDatesProperties:
                       DatesProperties(disable: true, hide: true),
@@ -242,11 +234,11 @@ class _HabitOpenState extends State<HabitOpen> {
                 width: 320,
                 child: Row(children: [
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'Max',
                           style: TextStyle(
                               fontSize: 30,
@@ -254,26 +246,26 @@ class _HabitOpenState extends State<HabitOpen> {
                               fontFamily: 'Times',
                               color: Colors.white),
                         ),
-                        Text(
+                        const Text(
                           'Completion Streak',
                           style: TextStyle(
                               color: Color.fromARGB(255, 185, 185, 185)),
                         ),
                         Text(
                           datesnew.length.toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
                               color: Colors.green),
                         ),
-                        Text(
+                        const Text(
                           'days',
                           style: TextStyle(color: Colors.white),
                         )
                       ],
                     ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: VerticalDivider(
                       thickness: 2,
@@ -282,11 +274,11 @@ class _HabitOpenState extends State<HabitOpen> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'Max',
                           style: TextStyle(
                               fontSize: 30,
@@ -294,19 +286,19 @@ class _HabitOpenState extends State<HabitOpen> {
                               fontFamily: 'Times',
                               color: Colors.white),
                         ),
-                        Text(
+                        const Text(
                           'Skipped Days',
                           style: TextStyle(
                               color: Color.fromARGB(255, 185, 185, 185)),
                         ),
                         Text(
-                          '${differenceInDays - datesnew.length == -1 ? 0 : differenceInDays - datesnew.length}',
-                          style: TextStyle(
+                          '${differenceInDays - datesnew.length == -1 ? 0 : differenceInDays - datesnew.length + 1}',
+                          style: const TextStyle(
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
                               color: Color.fromARGB(255, 247, 177, 73)),
                         ),
-                        Text(
+                        const Text(
                           'days',
                           style: TextStyle(color: Colors.white),
                         )

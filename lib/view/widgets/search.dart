@@ -27,11 +27,11 @@ class CustomSearchBar extends StatelessWidget {
           ],
           child: CupertinoSearchTextField(
             controller: searchController,
-            backgroundColor: Color.fromARGB(255, 0, 0, 0),
+            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
             prefixIcon: const Icon(Icons.search,
                 color: Color.fromARGB(255, 227, 251, 92)),
             placeholder: 'Search...',
-            itemColor: Color.fromARGB(255, 255, 255, 255),
+            itemColor: const Color.fromARGB(255, 255, 255, 255),
             style: const TextStyle(color: Colors.white),
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             borderRadius: BorderRadius.circular(10.0),

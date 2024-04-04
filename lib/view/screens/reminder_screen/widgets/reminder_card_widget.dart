@@ -8,6 +8,7 @@ class ReminderCardWidget extends StatefulWidget {
   final String descr;
   final String date;
   final String rkey;
+  final String time;
   // final String date;
 
   const ReminderCardWidget({
@@ -16,6 +17,7 @@ class ReminderCardWidget extends StatefulWidget {
     required this.date,
     required this.descr,
     required this.rkey,
+    required this.time,
   });
 
   @override
@@ -25,6 +27,7 @@ class ReminderCardWidget extends StatefulWidget {
 class _GoalsCardWidgetState extends State<ReminderCardWidget> {
   @override
   Widget build(BuildContext context) {
+     final size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -38,7 +41,7 @@ class _GoalsCardWidgetState extends State<ReminderCardWidget> {
             ));
       },
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(3.0),
         child: Animate(
           effects: [
             FadeEffect(duration: 800.ms),
@@ -55,7 +58,7 @@ class _GoalsCardWidgetState extends State<ReminderCardWidget> {
                 child: Row(
                   children: [
                     SizedBox(
-                      width: 120,
+                      width: size.width*0.50,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -63,7 +66,7 @@ class _GoalsCardWidgetState extends State<ReminderCardWidget> {
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
                               widget.title,
-                               overflow: TextOverflow.ellipsis,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Color.fromARGB(255, 255, 255, 255),
                                 fontWeight: FontWeight.bold,
@@ -79,25 +82,36 @@ class _GoalsCardWidgetState extends State<ReminderCardWidget> {
                               fontSize: 16,
                             ),
                           ),
-                          // const SizedBox(
-                          //   width: 50,
-                          // ),
-                         
                         ],
                       ),
                     ),
-                     Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left:50.0,top: 30.0),
-                              child: Text(widget.date,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          Color.fromARGB(255, 72, 72, 72))),
-                            ),
-                          ],
-                        )
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: VerticalDivider(
+                        thickness: 1,
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        width: 30,
+                      ),
+                    ),
+                    
+                    const Spacer(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(widget.date,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromARGB(255, 72, 72, 72))),
+                        Text(widget.time,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Color.fromARGB(255, 72, 72, 72)))
+                      ],
+                    ),
+                    SizedBox(
+                      width:size.width*0.05 ,
+                    )
                   ],
                 ),
               ),

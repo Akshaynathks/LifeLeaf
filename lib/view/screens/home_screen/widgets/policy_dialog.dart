@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-class privacydialoge extends StatelessWidget {
-  privacydialoge({super.key, this.radius = 8, required this.mdFileName})
+class PrivacyDialoge extends StatelessWidget {
+  PrivacyDialoge({super.key, this.radius = 8, required this.mdFileName})
       : assert(mdFileName.contains('.md'));
   final double radius;
   final String mdFileName;
@@ -17,7 +17,7 @@ class privacydialoge extends StatelessWidget {
         children: [
           Expanded(
               child: FutureBuilder(
-            future: Future.delayed(Duration(milliseconds: 150)).then((value) {
+            future: Future.delayed(const Duration(milliseconds: 150)).then((value) {
               return rootBundle.loadString("assets/$mdFileName");
             }),
             builder: (context, snapshot) {
@@ -26,7 +26,7 @@ class privacydialoge extends StatelessWidget {
                   data: snapshot.data!,
                 );
               }
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             },
           )),
           ElevatedButton(
@@ -41,14 +41,14 @@ class privacydialoge extends StatelessWidget {
               alignment: Alignment.center,
               height: 50,
               width: 200,
-              child: Text(
+              child: const Text(
                 "Close",
                 style:
-                    TextStyle(color: const Color.fromARGB(255, 255, 111, 111)),
+                    TextStyle(color: Color.fromARGB(255, 255, 111, 111)),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           )
         ],

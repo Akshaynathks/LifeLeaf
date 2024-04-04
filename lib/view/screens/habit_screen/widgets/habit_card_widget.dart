@@ -37,6 +37,10 @@ class _HabitCardWidgetState extends State<HabitCardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    List<String> datesnew = widget.maxcompleate;
+    datesnew = datesnew.toSet().toList();
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -50,14 +54,14 @@ class _HabitCardWidgetState extends State<HabitCardWidget> {
             ));
       },
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(3.0),
         child: Animate(
           effects: [
             FadeEffect(duration: 800.ms),
           ],
           child: Card(
             child: Container(
-              height: 80,
+              height: 90,
               width: double.infinity,
               decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 244, 178, 66),
@@ -68,38 +72,50 @@ class _HabitCardWidgetState extends State<HabitCardWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                      padding: const EdgeInsets.only(top: 5.0, left: 3.0),
                       child: SizedBox(
-                        width: 200,
+                        width: 250,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               overflow: TextOverflow.ellipsis,
                               widget.title,
                               style: const TextStyle(
-                                color: Color.fromARGB(255, 255, 255, 255),
+                                color: Color.fromARGB(255, 0, 0, 0),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 22,
                               ),
                             ),
-                            const Text(
-                              'max',
-                              // widget.maxcompleate,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 16,
-                              ),
+                            Row(
+                              children: [
+                                const Text(
+                                  'Max Completion Streak',
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 47, 46, 46),
+                                      fontFamily: 'Times'),
+                                ),
+                                SizedBox(
+                                  width: size.width * 0.03,
+                                ),
+                                Text(datesnew.length.toString(),
+                                    style: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 255, 255, 255),
+                                        fontSize: 20))
+                              ],
                             ),
                           ],
                         ),
                       ),
                     ),
+                    const Spacer(),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: SizedBox(
+                        SizedBox(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   elevation: 15,

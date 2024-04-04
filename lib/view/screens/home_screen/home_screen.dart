@@ -213,7 +213,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   showDialog(
                       context: context,
                       builder: (context) {
-                        return privacydialoge(mdFileName: 'privacy_policy.md');
+                        return PrivacyDialoge(mdFileName: 'privacy_policy.md');
                       });
                 },
               ),
@@ -223,7 +223,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   showDialog(
                       context: context,
                       builder: (context) {
-                        return privacydialoge(
+                        return PrivacyDialoge(
                             mdFileName: 'terms_and_condition.md');
                       });
                 },

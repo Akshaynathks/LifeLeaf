@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:life_leaf/controller/goals_db_functions/goals_db_functions.dart';
@@ -20,9 +19,21 @@ class _GoalsState extends State<Goals> {
   List<GoalsMainModel> allGoals = [];
 
   @override
+  // void initState() {
+  //   super.initState();
+  //   GoalDb.getGoals();
+  //   goalsBox = Hive.box<GoalsMainModel>("goal_details");
+  //   allGoals = goalsBox.values.toList();
+  // }
+  @override
   void initState() {
     super.initState();
+    openBox(); // Call openBox() to open the Hive box
     GoalDb.getGoals();
+  }
+
+  void openBox() async {
+    await Hive.openBox<GoalsMainModel>("goal_details");
     goalsBox = Hive.box<GoalsMainModel>("goal_details");
     allGoals = goalsBox.values.toList();
   }
@@ -52,36 +63,97 @@ class _GoalsState extends State<Goals> {
                   valueListenable: goalsNotifier,
                   builder: (context, value, child) {
                     return searchController.text == ''
-                        ? ListView.builder(
-                            itemCount: value
-                                .length, // Adjust this based on your actual item count
-                            itemBuilder: (context, index) {
-                              return GoalsCardWidget(
-                                title: value[index].goalTitle ?? '',
-                                stepss: value[index].goalList,
-                                mainKey: value[index].key ?? '',
-                                goal: value[index],
-                                stepkey: value[index].goalList[0].key ?? '',
-                                isMarked: value[index].isMarked ?? 0,
-                              ); // You can modify this to display data based on the index
-                            },
-                          )
-                        : searchController.text != ''
+                        ? value.isNotEmpty
                             ? ListView.builder(
-                                itemCount: searchList
+                                itemCount: value
                                     .length, // Adjust this based on your actual item count
                                 itemBuilder: (context, index) {
                                   return GoalsCardWidget(
-                                    title: searchList[index].goalTitle ?? '',
-                                    stepss: searchList[index].goalList,
-                                    mainKey: searchList[index].key ?? '',
-                                    goal: searchList[index],
-                                    stepkey:
-                                        searchList[index].goalList[0].key ?? '',
-                                    isMarked: searchList[index].isMarked ?? 0,
+                                    title: value[index].goalTitle ?? '',
+                                    stepss: value[index].goalList,
+                                    mainKey: value[index].key ?? '',
+                                    goal: value[index],
+                                    stepkey: value[index].goalList[0].key ?? '',
+                                    isMarked: value[index].isMarked ?? 0,
                                   ); // You can modify this to display data based on the index
                                 },
                               )
+                            : const Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 200,
+                                    ),
+                                    Text(
+                                      'No Goals',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: 'Times',
+                                          fontWeight: FontWeight.bold,
+                                          color: Color.fromARGB(
+                                              255, 113, 191, 117)),
+                                    ),
+                                    SizedBox(
+                                      width: 200,
+                                      child: Text(
+                                        'Create Your Goals and it will show up here',
+                                        style: TextStyle(
+                                            fontFamily: 'Courier',
+                                            color: Color.fromARGB(
+                                                255, 195, 191, 191)),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                        : searchController.text != ''
+                            ? value.isNotEmpty
+                                ? ListView.builder(
+                                    itemCount: searchList
+                                        .length, // Adjust this based on your actual item count
+                                    itemBuilder: (context, index) {
+                                      return GoalsCardWidget(
+                                        title:
+                                            searchList[index].goalTitle ?? '',
+                                        stepss: searchList[index].goalList,
+                                        mainKey: searchList[index].key ?? '',
+                                        goal: searchList[index],
+                                        stepkey:
+                                            searchList[index].goalList[0].key ??
+                                                '',
+                                        isMarked:
+                                            searchList[index].isMarked ?? 0,
+                                      ); // You can modify this to display data based on the index
+                                    },
+                                  )
+                                : const Center(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 200,
+                                        ),
+                                        Text(
+                                          'No Goals',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: 'Times',
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                  255, 113, 191, 117)),
+                                        ),
+                                        SizedBox(
+                                          width: 200,
+                                          child: Text(
+                                            'Create Your Goals and it will show up here',
+                                            style: TextStyle(
+                                                fontFamily: 'Courier',
+                                                color: Color.fromARGB(
+                                                    255, 195, 191, 191)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
                             : const Center(
                                 child: Column(
                                   children: [
@@ -142,7 +214,7 @@ class _GoalsState extends State<Goals> {
                       return ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: const MaterialStatePropertyAll(
-                              Color.fromRGBO(26, 26, 26, 1)),
+                              Colors.transparent),
                           shape: MaterialStatePropertyAll(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),

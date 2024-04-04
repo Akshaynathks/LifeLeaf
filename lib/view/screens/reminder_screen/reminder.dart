@@ -19,11 +19,23 @@ class _ReminderState extends State<Reminder> {
   List<ReminderModel> searchList = [];
   List<ReminderModel> allRemainder = [];
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   ReminderDb.getReminder();
+  //   remainderBox = Hive.box<ReminderModel>("reminder_details");
+  //   allRemainder = remainderBox.values.toList();
+  // }
   @override
   void initState() {
     super.initState();
+    openBox(); // Call openBox() to open the Hive box
     ReminderDb.getReminder();
-    remainderBox = Hive.box<ReminderModel>("reminder_details");
+  }
+
+  void openBox() async {
+    await Hive.openBox<ReminderModel>("goal_details");
+    remainderBox = Hive.box<ReminderModel>("goal_details");
     allRemainder = remainderBox.values.toList();
   }
 
@@ -71,113 +83,12 @@ class _ReminderState extends State<Reminder> {
                   valueListenable: reminderNotifier,
                   builder: (context, value, child) {
                     return searchController.text == ''
-                        ? ListView.builder(
-                            itemCount: value
-                                .length, // Adjust this based on your actual item count
-                            itemBuilder: (context, index) {
-                              var fullDate = value[index].date ?? "d";
-                              var thisDate = fullDate.split('-');
-                              var month = thisDate.elementAt(1);
-                              if (month == '01') {
-                                month = 'Jan';
-                              }
-                              if (month == '02') {
-                                month = 'Feb';
-                              }
-                              if (month == '03') {
-                                month = 'Mar';
-                              }
-                              if (month == '04') {
-                                month = 'Apr';
-                              }
-                              if (month == '05') {
-                                month = 'May';
-                              }
-                              if (month == '06') {
-                                month = 'Jun';
-                              }
-                              if (month == '07') {
-                                month = 'Jul';
-                              }
-                              if (month == '08') {
-                                month = 'Aug';
-                              }
-                              if (month == '09') {
-                                month = 'Sep';
-                              }
-                              if (month == '10') {
-                                month = 'Oct';
-                              }
-                              if (month == '11') {
-                                month = 'Nov';
-                              }
-                              if (month == '12') {
-                                month = 'Dec';
-                              }
-
-                              var hourr = thisDate.elementAt(3);
-                              dynamic AP;
-
-                              if (hourr == ' 13' ||
-                                  hourr == ' 14' ||
-                                  hourr == ' 15' ||
-                                  hourr == ' 16' ||
-                                  hourr == ' 17' ||
-                                  hourr == ' 18' ||
-                                  hourr == ' 19' ||
-                                  hourr == ' 20' ||
-                                  hourr == ' 21' ||
-                                  hourr == ' 22' ||
-                                  hourr == ' 23' ||
-                                  hourr == ' 24') {
-                                AP = 'PM';
-                              } else {
-                                AP = 'AM';
-                              }
-
-                              var hour = thisDate.elementAt(3);
-                              if (hour == ' 13') {
-                                hour = '01';
-                              } else if (hour == ' 14') {
-                                hour = '02';
-                              } else if (hour == ' 15') {
-                                hour = '03';
-                              } else if (hour == ' 16') {
-                                hour = '04';
-                              } else if (hour == ' 17') {
-                                hour = '05';
-                              } else if (hour == ' 18') {
-                                hour = '06';
-                              } else if (hour == ' 19') {
-                                hour = '07';
-                              } else if (hour == ' 20') {
-                                hour = '08';
-                              } else if (hour == ' 21') {
-                                hour = '09';
-                              } else if (hour == ' 22') {
-                                hour = '10';
-                              } else if (hour == ' 23') {
-                                hour = '11';
-                              } else if (hour == ' 00') {
-                                hour = '12';
-                              }
-
-                              var datee =
-                                  '${thisDate.first} $month ${thisDate.elementAt(2)} ${hour.trim()}:${thisDate.elementAt(4)} $AP';
-                              return ReminderCardWidget(
-                                  title: value[index].title,
-                                  // date: value[index].date ?? '',
-                                  date: datee,
-                                  descr: value[index].description,
-                                  rkey: value[index].rkey ?? '');
-                            },
-                          )
-                        : searchController.text != ''
+                        ? value.isNotEmpty
                             ? ListView.builder(
-                                itemCount: searchList
+                                itemCount: value
                                     .length, // Adjust this based on your actual item count
                                 itemBuilder: (context, index) {
-                                  var fullDate = searchList[index].date ?? "d";
+                                  var fullDate = value[index].date ?? "d";
                                   var thisDate = fullDate.split('-');
                                   var month = thisDate.elementAt(1);
                                   if (month == '01') {
@@ -218,7 +129,7 @@ class _ReminderState extends State<Reminder> {
                                   }
 
                                   var hourr = thisDate.elementAt(3);
-                                  dynamic AP;
+                                  dynamic aP;
 
                                   if (hourr == ' 13' ||
                                       hourr == ' 14' ||
@@ -232,9 +143,9 @@ class _ReminderState extends State<Reminder> {
                                       hourr == ' 22' ||
                                       hourr == ' 23' ||
                                       hourr == ' 24') {
-                                    AP = 'PM';
+                                    aP = 'PM';
                                   } else {
-                                    AP = 'AM';
+                                    aP = 'AM';
                                   }
 
                                   var hour = thisDate.elementAt(3);
@@ -265,15 +176,182 @@ class _ReminderState extends State<Reminder> {
                                   }
 
                                   var datee =
-                                      '${thisDate.first} $month ${thisDate.elementAt(2)} ${hour.trim()}:${thisDate.elementAt(4)} $AP';
+                                      '${thisDate.first} $month ${thisDate.elementAt(2)}';
+                                  var timee =
+                                      ' ${hour.trim()}:${thisDate.elementAt(4)} $aP';
                                   return ReminderCardWidget(
-                                      title: searchList[index].title,
-                                      // date: searchList[index].date ?? '',
-                                      date: datee,
-                                      descr: searchList[index].description,
-                                      rkey: searchList[index].rkey ?? '');
+                                    title: value[index].title,
+                                    // date: value[index].date ?? '',
+                                    date: datee,
+                                    descr: value[index].description,
+                                    rkey: value[index].rkey ?? '', time: timee,
+                                  );
                                 },
                               )
+                            : const Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 200,
+                                    ),
+                                    Text(
+                                      'No Reminder',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: 'Times',
+                                          fontWeight: FontWeight.bold,
+                                          color: Color.fromARGB(
+                                              255, 113, 191, 117)),
+                                    ),
+                                    SizedBox(
+                                      width: 200,
+                                      child: Text(
+                                        'Create Your Reminder and it will show up here',
+                                        style: TextStyle(
+                                            fontFamily: 'Courier',
+                                            color: Color.fromARGB(
+                                                255, 195, 191, 191)),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                        : searchController.text != ''
+                            ? value.isNotEmpty
+                                ? ListView.builder(
+                                    itemCount: searchList
+                                        .length, // Adjust this based on your actual item count
+                                    itemBuilder: (context, index) {
+                                      var fullDate =
+                                          searchList[index].date ?? "d";
+                                      var thisDate = fullDate.split('-');
+                                      var month = thisDate.elementAt(1);
+                                      if (month == '01') {
+                                        month = 'Jan';
+                                      }
+                                      if (month == '02') {
+                                        month = 'Feb';
+                                      }
+                                      if (month == '03') {
+                                        month = 'Mar';
+                                      }
+                                      if (month == '04') {
+                                        month = 'Apr';
+                                      }
+                                      if (month == '05') {
+                                        month = 'May';
+                                      }
+                                      if (month == '06') {
+                                        month = 'Jun';
+                                      }
+                                      if (month == '07') {
+                                        month = 'Jul';
+                                      }
+                                      if (month == '08') {
+                                        month = 'Aug';
+                                      }
+                                      if (month == '09') {
+                                        month = 'Sep';
+                                      }
+                                      if (month == '10') {
+                                        month = 'Oct';
+                                      }
+                                      if (month == '11') {
+                                        month = 'Nov';
+                                      }
+                                      if (month == '12') {
+                                        month = 'Dec';
+                                      }
+
+                                      var hourr = thisDate.elementAt(3);
+                                      dynamic aP;
+
+                                      if (hourr == ' 13' ||
+                                          hourr == ' 14' ||
+                                          hourr == ' 15' ||
+                                          hourr == ' 16' ||
+                                          hourr == ' 17' ||
+                                          hourr == ' 18' ||
+                                          hourr == ' 19' ||
+                                          hourr == ' 20' ||
+                                          hourr == ' 21' ||
+                                          hourr == ' 22' ||
+                                          hourr == ' 23' ||
+                                          hourr == ' 24') {
+                                        aP = 'PM';
+                                      } else {
+                                        aP = 'AM';
+                                      }
+
+                                      var hour = thisDate.elementAt(3);
+                                      if (hour == ' 13') {
+                                        hour = '01';
+                                      } else if (hour == ' 14') {
+                                        hour = '02';
+                                      } else if (hour == ' 15') {
+                                        hour = '03';
+                                      } else if (hour == ' 16') {
+                                        hour = '04';
+                                      } else if (hour == ' 17') {
+                                        hour = '05';
+                                      } else if (hour == ' 18') {
+                                        hour = '06';
+                                      } else if (hour == ' 19') {
+                                        hour = '07';
+                                      } else if (hour == ' 20') {
+                                        hour = '08';
+                                      } else if (hour == ' 21') {
+                                        hour = '09';
+                                      } else if (hour == ' 22') {
+                                        hour = '10';
+                                      } else if (hour == ' 23') {
+                                        hour = '11';
+                                      } else if (hour == ' 00') {
+                                        hour = '12';
+                                      }
+
+                                      var datee =
+                                          '${thisDate.first} $month ${thisDate.elementAt(2)} ';
+                                      var timeee =
+                                          "${hour.trim()}:${thisDate.elementAt(4)} $aP";
+                                      return ReminderCardWidget(
+                                        title: searchList[index].title,
+                                        // date: searchList[index].date ?? '',
+                                        date: datee,
+                                        descr: searchList[index].description,
+                                        rkey: searchList[index].rkey ?? '',
+                                        time: timeee,
+                                      );
+                                    },
+                                  )
+                                : const Center(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 200,
+                                        ),
+                                        Text(
+                                          'No Reminder',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: 'Times',
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                  255, 113, 191, 117)),
+                                        ),
+                                        SizedBox(
+                                          width: 200,
+                                          child: Text(
+                                            'Create Your Reminder and it will show up here',
+                                            style: TextStyle(
+                                                fontFamily: 'Courier',
+                                                color: Color.fromARGB(
+                                                    255, 195, 191, 191)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
                             : const Center(
                                 child: Column(
                                   children: [
@@ -334,7 +412,7 @@ class _ReminderState extends State<Reminder> {
                       return ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: const MaterialStatePropertyAll(
-                              Color.fromRGBO(0, 0, 0, 1)),
+                              Colors.transparent),
                           shape: MaterialStatePropertyAll(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),

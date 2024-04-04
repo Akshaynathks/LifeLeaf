@@ -17,18 +17,31 @@ class Habit extends StatefulWidget {
 class _HabitState extends State<Habit> {
   TextEditingController titleController = TextEditingController();
   bool _isSearchBarVisible = false;
-late Box<HabitModel> habitBox;
+  late Box<HabitModel> habitBox;
   List<HabitModel> searchList = [];
   List<HabitModel> allHabits = [];
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   HabitDb.getHabit();
+  //   habitBox = Hive.box<HabitModel>("habit_details");
+  //   allHabits = habitBox.values.toList();
+  // }
   @override
   void initState() {
     super.initState();
+    openBox(); // Call openBox() to open the Hive box
     HabitDb.getHabit();
-    habitBox = Hive.box<HabitModel>("habit_details");
+  }
+
+  void openBox() async {
+    await Hive.openBox<HabitModel>("goal_details");
+    habitBox = Hive.box<HabitModel>("goal_details");
     allHabits = habitBox.values.toList();
   }
-TextEditingController searchController=TextEditingController();
+
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,9 +55,10 @@ TextEditingController searchController=TextEditingController();
                   top: -5,
                   left: 20,
                   child: CustomSearchBar(
-                   onSearch: (value) async {
-                    searchRemainder(value);
-                  }, searchController: searchController,
+                    onSearch: (value) async {
+                      searchRemainder(value);
+                    },
+                    searchController: searchController,
                   ),
                 ),
               Expanded(
@@ -52,57 +66,119 @@ TextEditingController searchController=TextEditingController();
                   valueListenable: habitNotifier,
                   builder: (context, value, child) {
                     return searchController.text == ''
-                        ? ListView.builder(
-                            itemCount: value
-                                .length, // Adjust this based on your actual item count
-                            itemBuilder: (context, index) {
-                              return HabitCardWidget(
-                                title: value[index].title,
-                                maxcompleate: value[index].maxCompleated ?? [],
-                                maxskipped: value[index].maxSkipped,
-                                hkey: value[index].hkey ?? '',
-                              ); // You can modify this to display data based on the index
-                            },
-                          )
-                        :searchController.text != '' ?ListView.builder(
-                            itemCount: searchList
-                                .length, // Adjust this based on your actual item count
-                            itemBuilder: (context, index) {
-                              return HabitCardWidget(
-                                title: searchList[index].title,
-                                maxcompleate: searchList[index].maxCompleated ?? [],
-                                maxskipped: searchList[index].maxSkipped,
-                                hkey: searchList[index].hkey ?? '',
-                              ); // You can modify this to display data based on the index
-                            },
-                          ):const Center(
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 200,
+                        ? value.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: value
+                                    .length, // Adjust this based on your actual item count
+                                itemBuilder: (context, index) {
+                                  return HabitCardWidget(
+                                    title: value[index].title,
+                                    maxcompleate: value[index].maxCompleated,
+                                    maxskipped: value[index].maxSkipped,
+                                    hkey: value[index].hkey ?? '',
+                                  ); // You can modify this to display data based on the index
+                                },
+                              )
+                            : const Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 200,
+                                    ),
+                                    Text(
+                                      'No Habits',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: 'Times',
+                                          fontWeight: FontWeight.bold,
+                                          color: Color.fromARGB(
+                                              255, 113, 191, 117)),
+                                    ),
+                                    SizedBox(
+                                      width: 200,
+                                      child: Text(
+                                        'Create a Habit and it will show up hear',
+                                        style: TextStyle(
+                                            fontFamily: 'Courier',
+                                            color: Color.fromARGB(
+                                                255, 195, 191, 191)),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                Text(
-                                  'No Habits',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Times',
-                                      fontWeight: FontWeight.bold,
-                                      color:
-                                          Color.fromARGB(255, 113, 191, 117)),
+                              )
+                        : searchController.text != ''
+                            ? value.isNotEmpty
+                                ? ListView.builder(
+                                    itemCount: searchList
+                                        .length, // Adjust this based on your actual item count
+                                    itemBuilder: (context, index) {
+                                      return HabitCardWidget(
+                                        title: searchList[index].title,
+                                        maxcompleate:
+                                            searchList[index].maxCompleated,
+                                        maxskipped:
+                                            searchList[index].maxSkipped,
+                                        hkey: searchList[index].hkey ?? '',
+                                      ); // You can modify this to display data based on the index
+                                    },
+                                  )
+                                : const Center(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 200,
+                                        ),
+                                        Text(
+                                          'No Habits',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: 'Times',
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                  255, 113, 191, 117)),
+                                        ),
+                                        SizedBox(
+                                          width: 200,
+                                          child: Text(
+                                            'Create a Habit and it will show up hear',
+                                            style: TextStyle(
+                                                fontFamily: 'Courier',
+                                                color: Color.fromARGB(
+                                                    255, 195, 191, 191)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                            : const Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 200,
+                                    ),
+                                    Text(
+                                      'No Habits',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontFamily: 'Times',
+                                          fontWeight: FontWeight.bold,
+                                          color: Color.fromARGB(
+                                              255, 113, 191, 117)),
+                                    ),
+                                    SizedBox(
+                                      width: 200,
+                                      child: Text(
+                                        'Create a Habit and it will show up hear',
+                                        style: TextStyle(
+                                            fontFamily: 'Courier',
+                                            color: Color.fromARGB(
+                                                255, 195, 191, 191)),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 200,
-                                  child: Text(
-                                    'Create a Habit and it will show up hear',
-                                    style: TextStyle(
-                                        fontFamily: 'Courier',
-                                        color:
-                                            Color.fromARGB(255, 195, 191, 191)),
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
+                              );
                   },
                 ),
               ),
@@ -135,7 +211,7 @@ TextEditingController searchController=TextEditingController();
                       return ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: const MaterialStatePropertyAll(
-                              Color.fromRGBO(0, 0, 0, 1)),
+                              Colors.transparent),
                           shape: MaterialStatePropertyAll(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -166,11 +242,15 @@ TextEditingController searchController=TextEditingController();
       ),
     );
   }
-   searchRemainder(String value)async{
-setState(() {
-  searchList=allHabits.where((element) => element.title!.toLowerCase().startsWith(value.toLowerCase())).toList();
-}); }
 
+  searchRemainder(String value) async {
+    setState(() {
+      searchList = allHabits
+          .where((element) =>
+              element.title.toLowerCase().startsWith(value.toLowerCase()))
+          .toList();
+    });
+  }
 }
 
 void _showAddHabitDialog(BuildContext context) {
