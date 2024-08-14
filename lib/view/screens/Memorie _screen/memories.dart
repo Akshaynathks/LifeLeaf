@@ -303,13 +303,13 @@ class _MemoriesState extends State<Memories> {
                     return ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
-                            const MaterialStatePropertyAll(Colors.transparent),
-                        shape: MaterialStatePropertyAll(
+                            const WidgetStatePropertyAll(Colors.transparent),
+                        shape: WidgetStatePropertyAll(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        padding: const MaterialStatePropertyAll(
+                        padding: const WidgetStatePropertyAll(
                           EdgeInsets.only(left: 3, top: 8),
                         ),
                       ),

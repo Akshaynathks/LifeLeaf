@@ -210,14 +210,14 @@ class _JournalState extends State<Journal> {
                     builder: (context) {
                       return ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: const MaterialStatePropertyAll(
+                          backgroundColor: const WidgetStatePropertyAll(
                               Colors.transparent),
-                          shape: MaterialStatePropertyAll(
+                          shape: WidgetStatePropertyAll(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          padding: const MaterialStatePropertyAll(
+                          padding: const WidgetStatePropertyAll(
                             EdgeInsets.only(left: 3, top: 8),
                           ),
                         ),
